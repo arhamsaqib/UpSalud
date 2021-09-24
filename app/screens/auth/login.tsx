@@ -15,7 +15,9 @@ export const Login = ({navigation}: any) => {
     navigation.navigate('Patient');
   }
   const [show, setShow] = useState(false);
-  function onForget() {}
+  function onForget() {
+    navigation.navigate('Forget Password');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
