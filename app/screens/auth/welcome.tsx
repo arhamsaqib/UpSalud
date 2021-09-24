@@ -9,6 +9,9 @@ import CheckBox from '@react-native-community/checkbox';
 import {Logo} from '../../components/logo';
 
 export const Welcome = ({navigation}: any) => {
+  function onRegisterPress() {
+    navigation.navigate('Register');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{marginVertical: '15%', alignItems: 'center', width: '90%'}}>
@@ -17,7 +20,7 @@ export const Welcome = ({navigation}: any) => {
       <MyText style={styles.welcome}>WELCOME</MyText>
       <MyText style={{marginVertical: 10}}>Register to continue</MyText>
       <View style={{width: '90%', alignItems: 'center', marginVertical: 20}}>
-        <ButtonStandard title="Register" />
+        <ButtonStandard title="Register" onPress={onRegisterPress} />
         <Circle />
         <ButtonStandard title="Login" />
         {/* <View style={styles.tosCont}>

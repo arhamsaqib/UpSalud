@@ -13,12 +13,12 @@ export const TextInputStandard = (props: TIProps) => {
 
 const styles = StyleSheet.create({
   ti: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
     width: '100%',
     borderRadius: 5,
     height: 40,
     padding: 5,
     marginBottom: 5,
-    borderColor: COLORS.yellow,
+    borderColor: COLORS.text_blue,
   },
 });
