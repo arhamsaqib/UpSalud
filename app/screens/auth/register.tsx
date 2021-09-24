@@ -11,6 +11,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const Register = ({navigation}: any) => {
   const [fmodal, setFModal] = useState(false);
+  function onContinue() {
+    navigation.navigate('Set Password');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -95,7 +98,7 @@ export const Register = ({navigation}: any) => {
         </View>
       </View>
       <View style={{width: '90%'}}>
-        <ButtonStandard title="Continue" />
+        <ButtonStandard title="Continue" onPress={onContinue} />
       </View>
     </SafeAreaView>
   );
