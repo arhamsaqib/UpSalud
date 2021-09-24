@@ -1,0 +1,15 @@
+export const COLORS = {
+  yellow: '#ffd143',
+  pink: '#d32d6b',
+  mustard: '#eda20b',
+  green: '#9cc412',
+  blue: '#2ba7e9',
+  orange: '#fc3f1c',
+  purple: '#9d27b0',
+  dark_grey: '#2b4b5d',
+  danger: '#CA4141',
+  light_pink: '#efc0ce',
+  light_blue: '#4bd9fc',
+  dark_blue: '#2770ad',
+  text_blue: '#192976',
+};
