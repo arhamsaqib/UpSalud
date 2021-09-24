@@ -12,6 +12,9 @@ export const Welcome = ({navigation}: any) => {
   function onRegisterPress() {
     navigation.navigate('Register');
   }
+  function onLoginPress() {
+    navigation.navigate('Login');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{marginVertical: '15%', alignItems: 'center', width: '90%'}}>
@@ -22,7 +25,7 @@ export const Welcome = ({navigation}: any) => {
       <View style={{width: '90%', alignItems: 'center', marginVertical: 20}}>
         <ButtonStandard title="Register" onPress={onRegisterPress} />
         <Circle />
-        <ButtonStandard title="Login" />
+        <ButtonStandard title="Login" onPress={onLoginPress} />
         {/* <View style={styles.tosCont}>
           <CheckBox boxType="square" />
           <MyText style={[styles.tosText, {marginLeft: 5}]}>
