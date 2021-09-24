@@ -6,12 +6,13 @@ import {MedicalRecordsStack} from '../medicalRecords/medicalRecordsStack';
 import {ChatStack} from '../chat/chatStack';
 import {AccountStack} from '../account/accountStack';
 import {HelpStack} from '../help/helpStack';
+import {CustomDrawer} from './DrawerDesign';
 
 const Drawer = createDrawerNavigator();
 
 export const PatientDrawerNav = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen name="My Appointments" component={MyAppointmentsStack} />
       <Drawer.Screen name="Add Appointments" component={AddAppointmentsStack} />
       <Drawer.Screen name="Medical Records" component={MedicalRecordsStack} />
