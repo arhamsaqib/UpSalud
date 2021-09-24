@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {Avatar} from '../../../components/avatar';
 import {MyText} from '../../../core/text';
+import {ButtonStandard} from '../../../core/button';
+import {GlobalStyles} from '../../../styles/globalStyles';
 export const CustomDrawer = (props: any) => {
   return (
     <View style={{flex: 1}}>
@@ -59,6 +61,20 @@ export const CustomDrawer = (props: any) => {
         </View>
         {/* </SafeAreaView> */}
       </ScrollView>
+      <View
+        style={{
+          width: '80%',
+          alignItems: 'center',
+          alignSelf: 'center',
+          marginBottom: 20,
+        }}>
+        <TouchableOpacity style={[styles.logout, GlobalStyles.elevated_card]}>
+          <Icon name="log-out-outline" color={COLORS.danger} size={30} />
+          <MyText style={{fontSize: 17, letterSpacing: -1, fontWeight: 'bold'}}>
+            Logout
+          </MyText>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -78,5 +94,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
+  },
+  logout: {
+    flexDirection: 'row',
+    //borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    borderRadius: 5,
   },
 });
