@@ -8,7 +8,6 @@ import {MyText} from '../../../core/text';
 import {GlobalStyles} from '../../../styles/globalStyles';
 import {TextInputStandard} from '../../../core/textInput';
 import {ButtonStandard} from '../../../core/button';
-import {COLORS} from '../../../colors';
 
 export const ChangePassword = ({navigation}: any) => {
   const [show, setShow] = useState(false);
