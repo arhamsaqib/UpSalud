@@ -53,27 +53,15 @@ export const ManageFamilyMembers = ({navigation}: any) => {
         <Member name="Jane Doe" relation="Mother" />
         <Member name="Alex Mason" relation="Cousin" />
         <Member name="Mark" relation="Cousin" />
+      </View>
+
+      <View style={styles.bottom}>
         <ButtonStandard
+          style={{borderWidth: 1, borderColor: COLORS.dark_blue}}
+          secondary
           title="Add New"
           onPress={() => navigation.navigate('Add Family Member')}
         />
-      </View>
-      {/* <View style={{width: '90%'}}>
-        <View style={styles.infoCont}>
-          <MyText style={styles.head}>Email</MyText>
-          <TextInputStandard />
-          <MyText style={styles.head}>First Name</MyText>
-          <TextInputStandard />
-          <MyText style={styles.head}>Last Name</MyText>
-          <TextInputStandard />
-          <MyText style={styles.head}>ID Number</MyText>
-          <TextInputStandard />
-          <MyText style={styles.head}>Date of Birth</MyText>
-          <TextInputStandard />
-        </View>
-      </View> */}
-      <View style={styles.bottom}>
-        <ButtonStandard title="Save" />
       </View>
     </SafeAreaView>
   );

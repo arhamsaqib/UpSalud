@@ -50,7 +50,11 @@ export const Account = ({navigation}: any) => {
           iconName="people-outline"
           onPress={() => navigation.navigate('Manage Family Members')}
         />
-        <Card name="Change Password" iconName="key-outline" />
+        <Card
+          name="Change Password"
+          iconName="key-outline"
+          onPress={() => navigation.navigate('Change Password')}
+        />
       </View>
     </SafeAreaView>
   );

@@ -12,6 +12,7 @@ import {TextInputStandard} from '../../../core/textInput';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {FamilyRelation} from '../../../components/RelationsModal';
 import {useState} from 'react';
+import {COLORS} from '../../../colors';
 
 export const AddFamilyMember = ({navigation}: any) => {
   const [fmodal, setFModal] = useState(false);
@@ -39,7 +40,12 @@ export const AddFamilyMember = ({navigation}: any) => {
         <TouchableOpacity
           style={[styles.relCont]}
           onPress={() => setFModal(true)}>
-          <MyText style={{fontWeight: 'bold', letterSpacing: -1}}>
+          <MyText
+            style={{
+              fontWeight: 'bold',
+              letterSpacing: -1,
+              color: COLORS.dark_blue,
+            }}>
             Choose Relation
           </MyText>
         </TouchableOpacity>
@@ -75,7 +81,7 @@ export const AddFamilyMember = ({navigation}: any) => {
       {/*---------- */}
 
       <View style={styles.bottom}>
-        <ButtonStandard title="Add" />
+        <ButtonStandard title="Save" />
       </View>
     </SafeAreaView>
   );
