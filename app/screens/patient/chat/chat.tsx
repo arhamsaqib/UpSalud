@@ -6,16 +6,21 @@ import {ChatCard} from '../../../components/ChatCard';
 import {GlobalStyles} from '../../../styles/globalStyles';
 
 export const Chat = ({navigation}: any) => {
+  function onChatPress() {
+    navigation.navigate('Chat Details');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', marginBottom: 20}}>
         <Text style={styles.title}>Chat</Text>
       </View>
       <View style={{width: '90%'}}>
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
+        <ChatCard onPress={onChatPress} />
+        <ChatCard onPress={onChatPress} />
+        <ChatCard onPress={onChatPress} />
+        <ChatCard onPress={onChatPress} />
+        <ChatCard onPress={onChatPress} />
+        <ChatCard onPress={onChatPress} />
       </View>
     </SafeAreaView>
   );

@@ -11,6 +11,7 @@ interface Card {
 export const ChatCard = (props: Card) => {
   return (
     <TouchableOpacity
+      onPress={props.onPress}
       style={[styles.main, GlobalStyles.elevated_card, {marginVertical: 5}]}>
       <View style={{width: '25%'}}>
         <Image
