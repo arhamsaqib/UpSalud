@@ -7,7 +7,13 @@ interface TIProps extends TextInputProps {}
 export const TextInputStandard = (props: TIProps) => {
   const {style, ...rest} = props;
   return (
-    <TextInput autoCapitalize="none" {...rest} style={[styles.ti, style]} />
+    <TextInput
+      autoCapitalize="none"
+      //placeholder="Search"
+      {...rest}
+      style={[styles.ti, style]}
+      placeholderTextColor={'#666666'}
+    />
   );
 };
 

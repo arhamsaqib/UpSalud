@@ -7,6 +7,7 @@ import {
   View,
   Touchable,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
@@ -16,6 +17,9 @@ import {MyText} from '../../../core/text';
 import {DoctorCard} from '../../../components/DoctorCard';
 
 export const SelectDoctor = ({navigation}: any) => {
+  function onAppointmentBook() {
+    Alert.alert('Appointment Requested');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -52,7 +56,7 @@ export const SelectDoctor = ({navigation}: any) => {
         <DoctorCard />
       </View>
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
-        <ButtonStandard title="Next" />
+        <ButtonStandard title="Done" onPress={onAppointmentBook} />
       </View>
     </SafeAreaView>
   );

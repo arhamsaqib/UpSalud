@@ -1,10 +1,19 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export const BackBtn = () => {
+interface Btn {
+  onPress?(): void;
+}
+
+export const BackBtn = (props: Btn) => {
   return (
-    <View>
-      <Text>back</Text>
-    </View>
+    <TouchableOpacity style={styles.main} onPress={props.onPress}>
+      <Icon name="arrow-back-outline" size={20} />
+    </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  main: {},
+});
