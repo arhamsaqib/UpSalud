@@ -8,10 +8,12 @@ import {
 } from 'react-native';
 import {COLORS} from '../../../colors';
 import {GlobalStyles} from '../../../styles/globalStyles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface CProps {
   onPress?(): void;
   name?: string;
+  iconName: string;
 }
 
 const Card = (props: CProps) => {
@@ -19,6 +21,12 @@ const Card = (props: CProps) => {
     <TouchableOpacity
       onPress={props.onPress}
       style={[styles.card, GlobalStyles.elevated_card, {marginVertical: 5}]}>
+      <Icon
+        name={props.iconName}
+        size={18}
+        color={COLORS.dark_blue}
+        style={{marginRight: 10}}
+      />
       <Text style={styles.head}>{props.name}</Text>
     </TouchableOpacity>
   );
@@ -32,8 +40,13 @@ export const Account = ({navigation}: any) => {
       </View>
 
       <View style={{width: '90%'}}>
-        <Card name="Profile" />
-        <Card name="Change Password" />
+        <Card
+          name="Profile"
+          iconName="person-circle-outline"
+          onPress={() => navigation.navigate('Profile')}
+        />
+        <Card name="Manage Family Members" iconName="people-outline" />
+        <Card name="Change Password" iconName="key-outline" />
       </View>
     </SafeAreaView>
   );
@@ -58,6 +71,8 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: 10,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
