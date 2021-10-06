@@ -22,7 +22,7 @@ export const Register = ({navigation}: any) => {
     if (patient) {
       user_type = 'patient';
     }
-    navigation.navigate('Set Password', {user_tyepe: user_type});
+    navigation.navigate('Set Password', {user_type: user_type});
   }
   function onDoctorSet(val: boolean) {
     setDoctor(val);

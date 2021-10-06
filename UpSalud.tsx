@@ -9,6 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Welcome} from './app/screens/auth/welcome';
 import {SetPassword} from './app/screens/auth/password';
 import {Forget} from './app/screens/auth/forget';
+import {DoctorDrawerNav} from './app/screens/doctor/drawerNav/doctorDrawerNav';
 const Stack = createStackNavigator();
 
 export const UpSalud = () => {
@@ -22,6 +23,7 @@ export const UpSalud = () => {
         <Stack.Screen name="Set Password" component={SetPassword} />
         <Stack.Screen name="Role" component={Role} />
         <Stack.Screen name="Patient" component={PatientDrawerNav} />
+        <Stack.Screen name="Doctor" component={DoctorDrawerNav} />
       </Stack.Navigator>
     </NavigationContainer>
   );

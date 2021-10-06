@@ -17,7 +17,12 @@ export const SetPassword = ({navigation, route}: any) => {
   }, []);
   const [show, setShow] = useState(false);
   function onPasswordEnter() {
-    navigation.navigate('Patient');
+    if (route.params.user_type === 'patient') {
+      navigation.navigate('Patient');
+    }
+    if (route.params.user_type === 'doctor') {
+      navigation.navigate('Doctor');
+    }
   }
   return (
     <SafeAreaView style={styles.main}>
