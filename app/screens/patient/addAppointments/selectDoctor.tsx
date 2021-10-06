@@ -8,6 +8,7 @@ import {
   Touchable,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
@@ -48,13 +49,17 @@ export const SelectDoctor = ({navigation}: any) => {
           </MyText>
         </View>
       </View>
-      <View style={{width: '90%'}}>
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
-      </View>
+      <ScrollView style={{width: '100%'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '90%'}}>
+            <DoctorCard />
+            <DoctorCard />
+            <DoctorCard />
+            <DoctorCard />
+            <DoctorCard />
+          </View>
+        </View>
+      </ScrollView>
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
         <ButtonStandard title="Done" onPress={onAppointmentBook} />
       </View>

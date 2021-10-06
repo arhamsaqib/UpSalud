@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Text, SafeAreaView, StyleSheet, View, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {ChatCard} from '../../../components/ChatCard';
@@ -14,14 +14,18 @@ export const Chat = ({navigation}: any) => {
       <View style={{width: '90%', marginBottom: 20}}>
         <Text style={styles.title}>Chat</Text>
       </View>
-      <View style={{width: '90%'}}>
-        <ChatCard onPress={onChatPress} />
-        <ChatCard onPress={onChatPress} />
-        <ChatCard onPress={onChatPress} />
-        <ChatCard onPress={onChatPress} />
-        <ChatCard onPress={onChatPress} />
-        <ChatCard onPress={onChatPress} />
-      </View>
+      <ScrollView style={{width: '100%'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '90%'}}>
+            <ChatCard onPress={onChatPress} />
+            <ChatCard onPress={onChatPress} />
+            <ChatCard onPress={onChatPress} />
+            <ChatCard onPress={onChatPress} />
+            <ChatCard onPress={onChatPress} />
+            <ChatCard onPress={onChatPress} />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

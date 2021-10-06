@@ -1,5 +1,11 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
 import {MyText} from '../../../core/text';
@@ -78,28 +84,32 @@ export const DoctorHome = ({navigation}: any) => {
       <View style={{width: '90%', marginBottom: 40}}>
         <MyText style={[styles.title, {fontSize: 20}]}>Home</MyText>
       </View>
-      <View style={{width: '90%'}}>
-        <MyText style={styles.title}>New Requests</MyText>
-        <RequestCard
-          name="John"
-          reason="Blood loss"
-          time="03:00 pm"
-          date="Oct 7 2021"
-        />
-        <RequestCard
-          name="Zoey"
-          reason="fever"
-          time="03:00 pm"
-          date="Oct 7 2021"
-        />
-        <RequestCard
-          name="Mark"
-          reason="Severe Blood Loss"
-          time="03:00 pm"
-          date="Oct 7 2021"
-          emergency
-        />
-      </View>
+      <ScrollView style={{width: '100%'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '90%'}}>
+            <MyText style={styles.title}>New Requests</MyText>
+            <RequestCard
+              name="John"
+              reason="Blood loss"
+              time="03:00 pm"
+              date="Oct 7 2021"
+            />
+            <RequestCard
+              name="Zoey"
+              reason="fever"
+              time="03:00 pm"
+              date="Oct 7 2021"
+            />
+            <RequestCard
+              name="Mark"
+              reason="Severe Blood Loss"
+              time="03:00 pm"
+              date="Oct 7 2021"
+              emergency
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

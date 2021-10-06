@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Text, SafeAreaView, StyleSheet, View, ScrollView} from 'react-native';
 import {MedicalRecordCard} from '../../../components/Record';
 import {TextInputStandard} from '../../../core/textInput';
 
@@ -17,17 +17,21 @@ export const MedicalRecords = ({navigation}: any) => {
         </View>
       </View>
 
-      <View style={{width: '90%'}}>
-        <MedicalRecordCard
-          onPress={() => navigation.navigate('Record Details')}
-        />
-        <MedicalRecordCard
-          onPress={() => navigation.navigate('Record Details')}
-        />
-        <MedicalRecordCard
-          onPress={() => navigation.navigate('Record Details')}
-        />
-      </View>
+      <ScrollView style={{width: '100%'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '90%'}}>
+            <MedicalRecordCard
+              onPress={() => navigation.navigate('Record Details')}
+            />
+            <MedicalRecordCard
+              onPress={() => navigation.navigate('Record Details')}
+            />
+            <MedicalRecordCard
+              onPress={() => navigation.navigate('Record Details')}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
