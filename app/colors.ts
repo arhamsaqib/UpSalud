@@ -12,4 +12,5 @@ export const COLORS = {
   light_blue: '#4bd9fc',
   dark_blue: '#2770ad',
   text_blue: '#192976',
+  emerald_green: '#50C878',
 };
