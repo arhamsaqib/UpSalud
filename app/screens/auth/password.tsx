@@ -9,8 +9,12 @@ import {GlobalStyles} from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 import {useState} from 'react';
+import {useEffect} from 'react';
 
-export const SetPassword = ({navigation}: any) => {
+export const SetPassword = ({navigation, route}: any) => {
+  useEffect(() => {
+    console.log(route.params, 'Params');
+  }, []);
   const [show, setShow] = useState(false);
   function onPasswordEnter() {
     navigation.navigate('Patient');
