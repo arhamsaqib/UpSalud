@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Switch} from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../colors';
 import {ButtonStandard} from '../../core/button';
@@ -7,22 +7,46 @@ import {MyText} from '../../core/text';
 import {TextInputStandard} from '../../core/textInput';
 import {GlobalStyles} from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Switch} from 'react-native-gesture-handler';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import auth from '@react-native-firebase/auth';
 
 export const SetPassword = ({navigation, route}: any) => {
   useEffect(() => {
-    console.log(route.params, 'Params');
+    //console.log(route.params, 'Params');
   }, []);
+  const [newPassword, setNewPassword] = useState('');
   const [show, setShow] = useState(false);
-  function onPasswordEnter() {
-    if (route.params.user_type === 'patient') {
-      navigation.navigate('Patient');
-    }
-    if (route.params.user_type === 'doctor') {
-      navigation.navigate('Doctor');
-    }
+  const [loading, setLoading] = useState(false);
+  async function onPasswordEnter() {
+    setLoading(true);
+    auth()
+      .createUserWithEmailAndPassword(route.params.userInfo.email, newPassword)
+      .then(() => {
+        setLoading(false);
+        console.log('User account created & signed in!');
+        if (route.params.user_type === 'patient') {
+          navigation.navigate('Patient');
+        }
+        if (route.params.user_type === 'doctor') {
+          navigation.navigate('Doctor');
+        }
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+    // if (route.params.user_type === 'patient') {
+    //   navigation.navigate('Patient');
+    // }
+    // if (route.params.user_type === 'doctor') {
+    //   navigation.navigate('Doctor');
+    // }
   }
   return (
     <SafeAreaView style={styles.main}>
@@ -37,7 +61,10 @@ export const SetPassword = ({navigation, route}: any) => {
       <View style={{width: '90%'}}>
         <View style={[GlobalStyles.elevated_card, styles.card]}>
           <MyText style={styles.title}>Password</MyText>
-          <TextInputStandard secureTextEntry={!show} />
+          <TextInputStandard
+            secureTextEntry={!show}
+            onChangeText={setNewPassword}
+          />
           <MyText style={styles.title}>Confirm Password</MyText>
           <TextInputStandard secureTextEntry={!show} />
           <View
@@ -50,7 +77,12 @@ export const SetPassword = ({navigation, route}: any) => {
             <MyText style={styles.title}>Show Passwords</MyText>
             <Switch onValueChange={setShow} value={show} />
           </View>
-          <ButtonStandard title="Continue" onPress={onPasswordEnter} />
+          <ButtonStandard
+            title="Continue"
+            loading={loading}
+            disabled={loading}
+            onPress={onPasswordEnter}
+          />
         </View>
       </View>
     </SafeAreaView>

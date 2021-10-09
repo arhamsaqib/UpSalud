@@ -11,10 +11,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 
 export const Register = ({navigation}: any) => {
+  const [email, setEmail] = useState('');
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
   const [fmodal, setFModal] = useState(false);
   function onContinue() {
+    const userInfo = {
+      email: email,
+      fname: '',
+      lname: '',
+      idnumber: '',
+      dob: '',
+    };
+
     var user_type;
     if (doctor) {
       user_type = 'doctor';
@@ -22,7 +31,10 @@ export const Register = ({navigation}: any) => {
     if (patient) {
       user_type = 'patient';
     }
-    navigation.navigate('Set Password', {user_type: user_type});
+    navigation.navigate('Set Password', {
+      user_type: user_type,
+      userInfo: userInfo,
+    });
   }
   function onDoctorSet(val: boolean) {
     setDoctor(val);
@@ -55,7 +67,7 @@ export const Register = ({navigation}: any) => {
           <View style={{width: '90%'}}>
             <View style={styles.infoCont}>
               <MyText style={styles.title}>Email</MyText>
-              <TextInputStandard />
+              <TextInputStandard onChangeText={setEmail} />
               <MyText style={styles.title}>First Name</MyText>
               <TextInputStandard />
               <MyText style={styles.title}>Last Name</MyText>

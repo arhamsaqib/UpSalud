@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   StyleProp,
   StyleSheet,
   Text,
@@ -8,11 +9,13 @@ import {
   TouchableOpacityProps,
 } from 'react-native';
 import {COLORS} from '../colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface BProps extends TouchableOpacityProps {
   title?: string;
   secondary?: boolean;
   textStyle?: StyleProp<TextStyle>;
+  loading?: boolean;
 }
 
 export const ButtonStandard = (props: BProps) => {
@@ -29,6 +32,13 @@ export const ButtonStandard = (props: BProps) => {
         ]}>
         {props.title}
       </Text>
+      {props.loading && (
+        <ActivityIndicator
+          style={{marginLeft: 5}}
+          size={17}
+          color={COLORS.blue}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -44,5 +54,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.dark_blue,
     //borderColor: COLORS.yellow,
     marginVertical: 5,
+    flexDirection: 'row',
   },
 });
