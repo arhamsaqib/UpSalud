@@ -14,7 +14,17 @@ import {Avatar} from '../../../components/avatar';
 import {MyText} from '../../../core/text';
 import {ButtonStandard} from '../../../core/button';
 import {GlobalStyles} from '../../../styles/globalStyles';
+import auth from '@react-native-firebase/auth';
+
 export const CustomDrawer = (props: any) => {
+  async function onLogout() {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log('User signed out!');
+        props.navigation.navigate('Login');
+      });
+  }
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.header}>
@@ -68,7 +78,9 @@ export const CustomDrawer = (props: any) => {
           alignSelf: 'center',
           marginBottom: 20,
         }}>
-        <TouchableOpacity style={[styles.logout, GlobalStyles.elevated_card]}>
+        <TouchableOpacity
+          onPress={onLogout}
+          style={[styles.logout, GlobalStyles.elevated_card]}>
           <Icon name="log-out-outline" color={COLORS.danger} size={30} />
           <MyText style={{fontSize: 17, letterSpacing: -1, fontWeight: 'bold'}}>
             Logout
