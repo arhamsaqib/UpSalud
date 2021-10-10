@@ -8,23 +8,23 @@ import {ButtonStandard} from '../../core/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
-import {useEffect} from 'react';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [initializing, setInitializing] = useState(true);
   const [loader, setLoader] = useState(false);
-  const [user, setUser] = useState();
-  function onAuthStateChanged(user: any) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-    if (user) navigation.replace('Patient');
-  }
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+
+  // const [initializing, setInitializing] = useState(true);
+  // const [user, setUser] = useState();
+  // function onAuthStateChanged(user: any) {
+  //   setUser(user);
+  //   if (initializing) setInitializing(false);
+  //   if (user) navigation.replace('Patient');
+  // }
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
   function onContinue() {
     setLoader(true);
     auth()

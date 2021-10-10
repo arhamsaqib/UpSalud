@@ -8,6 +8,7 @@ import {TextInputStandard} from '../../core/textInput';
 import {GlobalStyles} from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import {createUser} from '../../api/users';
 
 export const SetPassword = ({navigation, route}: any) => {
   useEffect(() => {
@@ -16,19 +17,33 @@ export const SetPassword = ({navigation, route}: any) => {
   const [newPassword, setNewPassword] = useState('');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  async function createLaravelUser(uid: string) {
+    const data = {
+      name: 'XYZ',
+      email: route.params.userInfo.email,
+      fuid: uid,
+      role: route.params.user_type,
+    };
+    const newuser = await createUser(data).finally(() => {
+      setLoading(false);
+    });
+    if (route.params.user_type === 'patient') {
+      navigation.navigate('Patient');
+    }
+    if (route.params.user_type === 'doctor') {
+      navigation.navigate('Doctor');
+    }
+  }
+
   async function onPasswordEnter() {
     setLoading(true);
     auth()
       .createUserWithEmailAndPassword(route.params.userInfo.email, newPassword)
-      .then(() => {
-        setLoading(false);
-        console.log('User account created & signed in!');
-        if (route.params.user_type === 'patient') {
-          navigation.navigate('Patient');
-        }
-        if (route.params.user_type === 'doctor') {
-          navigation.navigate('Doctor');
-        }
+      .then(userCredential => {
+        const uid = userCredential.user.uid;
+
+        createLaravelUser(uid);
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -41,12 +56,6 @@ export const SetPassword = ({navigation, route}: any) => {
 
         console.error(error);
       });
-    // if (route.params.user_type === 'patient') {
-    //   navigation.navigate('Patient');
-    // }
-    // if (route.params.user_type === 'doctor') {
-    //   navigation.navigate('Doctor');
-    // }
   }
   return (
     <SafeAreaView style={styles.main}>
