@@ -1,11 +1,11 @@
-export interface User {
+export interface UserInterface {
   name: string;
   email: string;
   fuid: string; //Firebase User Id
   role: 'patient | doctor';
 }
 
-export interface BasicInformation {
+export interface BasicInformationInterface {
   fname: string;
   lname: string;
   uid: string;
@@ -13,7 +13,7 @@ export interface BasicInformation {
   id_number: string;
 }
 
-export interface FamilyMembers {
+export interface FamilyMembersInterface {
   uid: string;
   fname: string;
   lname: string;
@@ -23,7 +23,7 @@ export interface FamilyMembers {
   id_number: string;
 }
 
-export interface Appointments {
+export interface AppointmentsInterface {
   reason: string;
   emergency?: boolean;
   uid: string;
