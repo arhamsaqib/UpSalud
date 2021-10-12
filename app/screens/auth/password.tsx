@@ -22,7 +22,7 @@ export const SetPassword = ({navigation, route}: any) => {
   const store = useStore();
   async function createLaravelUser(uid: string) {
     const data = {
-      name: 'XYZ',
+      name: route.params.userInfo.fname,
       email: route.params.userInfo.email,
       fuid: uid,
       role: route.params.user_type,
@@ -93,7 +93,8 @@ export const SetPassword = ({navigation, route}: any) => {
             onChangeText={setNewPassword}
           />
           <MyText style={styles.title}>Confirm Password</MyText>
-          <TextInputStandard secureTextEntry={!show} />
+          <MyText style={styles.disabled}>Disabled for testing</MyText>
+          <TextInputStandard secureTextEntry={!show} editable={false} />
           <View
             style={{
               flexDirection: 'row',
@@ -126,5 +127,10 @@ const styles = StyleSheet.create({
   title: {
     letterSpacing: -1,
     fontWeight: 'bold',
+  },
+  disabled: {
+    fontSize: 12,
+    color: '#666666',
+    letterSpacing: -1,
   },
 });

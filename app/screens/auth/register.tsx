@@ -12,13 +12,14 @@ import {Switch} from 'react-native-gesture-handler';
 
 export const Register = ({navigation}: any) => {
   const [email, setEmail] = useState('');
+  const [fname, setFname] = useState('');
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
   const [fmodal, setFModal] = useState(false);
   function onContinue() {
     const userInfo = {
       email: email,
-      fname: '',
+      fname: fname,
       lname: '',
       idnumber: '',
       dob: '',
@@ -52,6 +53,7 @@ export const Register = ({navigation}: any) => {
       setDoctor(true);
     }
   }
+  const dtext = '(Disabled for testing)';
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -69,13 +71,19 @@ export const Register = ({navigation}: any) => {
               <MyText style={styles.title}>Email</MyText>
               <TextInputStandard onChangeText={setEmail} />
               <MyText style={styles.title}>First Name</MyText>
-              <TextInputStandard />
+              <TextInputStandard onChangeText={setFname} />
               <MyText style={styles.title}>Last Name</MyText>
-              <TextInputStandard />
+              <MyText style={styles.disabled}>{dtext}</MyText>
+
+              <TextInputStandard editable={false} />
               <MyText style={styles.title}>ID Number</MyText>
-              <TextInputStandard />
+              <MyText style={styles.disabled}>{dtext}</MyText>
+
+              <TextInputStandard editable={false} />
               <MyText style={styles.title}>Date of Birth</MyText>
-              <TextInputStandard />
+              <MyText style={styles.disabled}>{dtext}</MyText>
+
+              <TextInputStandard editable={false} />
             </View>
             <View style={styles.infoCont}>
               <View
@@ -133,12 +141,16 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>First Name</MyText>
-                    <TextInputStandard />
+                    <MyText style={styles.disabled}>{dtext}</MyText>
+
+                    <TextInputStandard editable={false} />
                   </View>
 
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Last Name</MyText>
-                    <TextInputStandard />
+                    <MyText style={styles.disabled}>{dtext}</MyText>
+
+                    <TextInputStandard editable={false} />
                   </View>
                 </View>
                 <View
@@ -149,15 +161,21 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>ID Number</MyText>
-                    <TextInputStandard />
+                    <MyText style={styles.disabled}>{dtext}</MyText>
+
+                    <TextInputStandard editable={false} />
                   </View>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Age</MyText>
+                    <MyText style={styles.disabled}>{dtext}</MyText>
+
                     <TextInputStandard keyboardType="number-pad" />
                   </View>
                 </View>
                 <MyText style={styles.title}>Date of Birth</MyText>
-                <TextInputStandard />
+                <MyText style={styles.disabled}>{dtext}</MyText>
+
+                <TextInputStandard editable={false} />
               </View>
             )}
           </View>
@@ -204,5 +222,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     marginVertical: 10,
+  },
+  disabled: {
+    fontSize: 12,
+    color: '#666666',
+    letterSpacing: -1,
   },
 });
