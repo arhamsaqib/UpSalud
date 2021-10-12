@@ -9,12 +9,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import {showUser} from '../../api/users';
+import {useStore} from 'react-redux';
+import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
-
+  const store = useStore();
   // const [initializing, setInitializing] = useState(true);
   // const [user, setUser] = useState();
   // function onAuthStateChanged(user: any) {
@@ -30,8 +32,20 @@ export const Login = ({navigation}: any) => {
     console.log(uid);
     const user = await showUser(uid);
     console.log(user);
-
-    //navigation.navigate('Patient');
+    if (user.id !== undefined) {
+      store.dispatch(
+        SetUserAction({
+          id: user.id,
+          role: user.role,
+        }),
+      );
+    }
+    if (user.role === 'patient') {
+      navigation.navigate('Patient');
+    }
+    if (user.role === 'doctor') {
+      navigation.navigate('Doctor');
+    }
   }
   function onContinue() {
     setLoader(true);

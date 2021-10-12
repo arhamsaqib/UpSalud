@@ -1,8 +1,12 @@
 import React from 'react';
 import {Text, SafeAreaView, StyleSheet, View, ScrollView} from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
 import {AppointmentCard} from '../../../components/AppointmentCard';
 
 export const MyAppointments = ({navigation}: any) => {
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
+  console.log(state);
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', marginBottom: 20}}>
