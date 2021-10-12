@@ -8,6 +8,7 @@ import {ButtonStandard} from '../../core/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+import {showUser} from '../../api/users';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
@@ -25,14 +26,23 @@ export const Login = ({navigation}: any) => {
   //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
   //   return subscriber; // unsubscribe on unmount
   // }, []);
+  async function verifyLaravelUser(uid: any) {
+    console.log(uid);
+    const user = await showUser(uid);
+    console.log(user);
+
+    //navigation.navigate('Patient');
+  }
   function onContinue() {
     setLoader(true);
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(userCredential => {
         setLoader(false);
+        const uid = userCredential.user.uid;
+
+        verifyLaravelUser(uid);
         //console.log('User account created & signed in!');
-        navigation.navigate('Patient');
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
