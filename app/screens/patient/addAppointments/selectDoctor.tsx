@@ -20,9 +20,14 @@ import {DoctorCard} from '../../../components/DoctorCard';
 import {useEffect} from 'react';
 import {showDoctors} from '../../../api/showDoctors';
 import {FlatList} from 'react-native-gesture-handler';
+import {makeAppointment} from '../../../api/appointments';
+import {RootStateOrAny, useSelector} from 'react-redux';
 
-export const SelectDoctor = ({navigation}: any) => {
+export const SelectDoctor = ({navigation, route}: any) => {
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
   async function FetchAPI() {
+    console.log(route.params, 'Params');
+
     const data = await showDoctors('doctor').finally(() => {
       setLoader(false);
     });
@@ -35,9 +40,30 @@ export const SelectDoctor = ({navigation}: any) => {
     FetchAPI();
   }, []);
   const [doctors, setDoctors]: any = useState([]);
+  const [selectedDoctor, setSelectedDoctor]: any = useState([]);
   const [loader, setLoader]: any = useState([]);
-  function onAppointmentBook() {
-    Alert.alert('Appointment Requested');
+  async function onAppointmentBook() {
+    const details = route.params.appointmentDetails;
+    setLoader(true);
+    const data = {
+      reason: details.reason.toString(),
+      emergency: details.emergency,
+      uid: state.id.toString(),
+      doctor_id: selectedDoctor.id.toString(),
+      status: 'pending',
+      date: details.date.toString(),
+      lat: '0',
+      lng: '0',
+    };
+    console.log(data);
+
+    const setApt = await makeAppointment(data).finally(() => setLoader(false));
+    console.log(setApt);
+
+    if (setApt.id !== undefined) {
+      Alert.alert('Appointment Booked');
+      navigation.navigate('Add Appointments Main');
+    }
   }
   return (
     <SafeAreaView style={styles.main}>
@@ -72,12 +98,23 @@ export const SelectDoctor = ({navigation}: any) => {
         <View style={{width: '90%'}}>
           <FlatList
             data={doctors}
-            renderItem={({item, index}: any) => <DoctorCard name={item.name} />}
+            renderItem={({item, index}: any) => (
+              <DoctorCard
+                selected={selectedDoctor.id === item.id}
+                name={item.name}
+                onPress={() => setSelectedDoctor(item)}
+              />
+            )}
           />
         </View>
       )}
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
-        <ButtonStandard title="Done" onPress={onAppointmentBook} />
+        <ButtonStandard
+          title="Done"
+          disabled={loader}
+          loading={loader}
+          onPress={onAppointmentBook}
+        />
       </View>
     </SafeAreaView>
   );

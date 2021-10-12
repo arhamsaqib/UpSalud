@@ -12,12 +12,27 @@ import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
 import {TextInputStandard} from '../../../core/textInput';
 import {GlobalStyles} from '../../../styles/globalStyles';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 export const AddAppointments = ({navigation}: any) => {
   const [emergency, setEmergency] = useState(false);
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [reason, setReason] = useState('');
+
   function onNext() {
-    navigation.navigate('Select Doctor');
+    navigation.navigate('Select Doctor', {
+      appointmentDetails: {
+        emergency: emergency,
+        reason: reason,
+        date: date,
+      },
+    });
   }
+  const handleConfirm = (date: Date) => {
+    setDate(date);
+    setShow(false);
+  };
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%'}}>
@@ -29,6 +44,7 @@ export const AddAppointments = ({navigation}: any) => {
           Reason
         </Text>
         <TextInputStandard
+          onChangeText={setReason}
           multiline
           style={{padding: 10, height: 200, borderLeftWidth: 1}}
         />
@@ -57,6 +73,7 @@ export const AddAppointments = ({navigation}: any) => {
       <View style={[{width: '90%', marginTop: 20}]}>
         <Text style={[styles.head, {fontSize: 15}]}>Date:</Text>
         <TouchableOpacity
+          onPress={() => setShow(true)}
           style={[
             GlobalStyles.elevated_card,
             {alignItems: 'center', backgroundColor: COLORS.light_blue},
@@ -66,6 +83,12 @@ export const AddAppointments = ({navigation}: any) => {
           </Text>
         </TouchableOpacity>
       </View>
+      <DateTimePickerModal
+        isVisible={show}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={() => setShow(false)}
+      />
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
         <ButtonStandard title="Next" onPress={onNext} />
       </View>

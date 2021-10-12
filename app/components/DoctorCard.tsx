@@ -33,14 +33,21 @@ const Field = (props: FieldProps) => {
   );
 };
 
-interface ProfileCardProps extends TouchableOpacityProps {
+interface DoctorCardProps extends TouchableOpacityProps {
   name?: string;
+  selected?: boolean;
 }
 
-export const DoctorCard = (props: ProfileCardProps) => {
+export const DoctorCard = (props: DoctorCardProps) => {
   const {style, ...rest} = props;
   return (
-    <TouchableOpacity {...rest} style={[style, styles.main]}>
+    <TouchableOpacity
+      {...rest}
+      style={[
+        style,
+        styles.main,
+        props.selected && {backgroundColor: COLORS.blue},
+      ]}>
       <View style={{width: '25%', alignItems: 'center'}}>
         <Image
           style={{
