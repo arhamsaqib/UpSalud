@@ -9,6 +9,8 @@ import {GlobalStyles} from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import {createUser} from '../../api/users';
+import {useStore} from 'react-redux';
+import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
 
 export const SetPassword = ({navigation, route}: any) => {
   useEffect(() => {
@@ -17,7 +19,7 @@ export const SetPassword = ({navigation, route}: any) => {
   const [newPassword, setNewPassword] = useState('');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const store = useStore();
   async function createLaravelUser(uid: string) {
     const data = {
       name: 'XYZ',
@@ -25,15 +27,31 @@ export const SetPassword = ({navigation, route}: any) => {
       fuid: uid,
       role: route.params.user_type,
     };
-    const newuser = await createUser(data).finally(() => {
+    const user = await createUser(data).finally(() => {
       setLoading(false);
     });
-    if (route.params.user_type === 'patient') {
+    console.log(user, 'New User');
+    if (user.id !== undefined) {
+      store.dispatch(
+        SetUserAction({
+          id: user.id,
+          role: user.role,
+        }),
+      );
+    }
+    if (user.role === 'patient') {
       navigation.navigate('Patient');
     }
-    if (route.params.user_type === 'doctor') {
+    if (user.role === 'doctor') {
       navigation.navigate('Doctor');
     }
+
+    // if (route.params.user_type === 'patient') {
+    //   navigation.navigate('Patient');
+    // }
+    // if (route.params.user_type === 'doctor') {
+    //   navigation.navigate('Doctor');
+    // }
   }
 
   async function onPasswordEnter() {
