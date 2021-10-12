@@ -34,7 +34,7 @@ const Field = (props: FieldProps) => {
 };
 
 interface ProfileCardProps extends TouchableOpacityProps {
-  //type?: null | 'judge' | 'contestant';
+  name?: string;
 }
 
 export const DoctorCard = (props: ProfileCardProps) => {
@@ -54,8 +54,8 @@ export const DoctorCard = (props: ProfileCardProps) => {
         />
       </View>
       <View style={{width: '73%'}}>
-        <Field name="Name" value="John Doe" />
-        <Field name="Specialist" value="Heart Specialist" />
+        <Field name="Name" value={'Dr. ' + props.name} />
+        {/* <Field name="Specialist" value="Heart Specialist" /> */}
       </View>
     </TouchableOpacity>
   );

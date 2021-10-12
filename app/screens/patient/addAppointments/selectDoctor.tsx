@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
@@ -16,8 +17,25 @@ import {GlobalStyles} from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {MyText} from '../../../core/text';
 import {DoctorCard} from '../../../components/DoctorCard';
+import {useEffect} from 'react';
+import {showDoctors} from '../../../api/showDoctors';
+import {FlatList} from 'react-native-gesture-handler';
 
 export const SelectDoctor = ({navigation}: any) => {
+  async function FetchAPI() {
+    const data = await showDoctors('doctor').finally(() => {
+      setLoader(false);
+    });
+    //console.log(data);
+
+    setDoctors(data);
+  }
+  useEffect(() => {
+    setLoader(true);
+    FetchAPI();
+  }, []);
+  const [doctors, setDoctors]: any = useState([]);
+  const [loader, setLoader]: any = useState([]);
   function onAppointmentBook() {
     Alert.alert('Appointment Requested');
   }
@@ -49,17 +67,15 @@ export const SelectDoctor = ({navigation}: any) => {
           </MyText>
         </View>
       </View>
-      <ScrollView style={{width: '100%'}}>
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <View style={{width: '90%'}}>
-            <DoctorCard />
-            <DoctorCard />
-            <DoctorCard />
-            <DoctorCard />
-            <DoctorCard />
-          </View>
+      {loader && <ActivityIndicator color={COLORS.dark_blue} size={'small'} />}
+      {!loader && (
+        <View style={{width: '90%'}}>
+          <FlatList
+            data={doctors}
+            renderItem={({item, index}: any) => <DoctorCard name={item.name} />}
+          />
         </View>
-      </ScrollView>
+      )}
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
         <ButtonStandard title="Done" onPress={onAppointmentBook} />
       </View>
