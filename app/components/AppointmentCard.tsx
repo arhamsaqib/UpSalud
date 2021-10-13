@@ -54,12 +54,12 @@ interface EDC {
   reason?: string;
 }
 const EventDescCard = (props: EDC) => {
-  const [doctor, setDoctor]: any = useState();
-  console.log(props.doctor, 'Doctor ID');
+  const [doctor, setDoctor]: any = useState([]);
+  //console.log(props.doctor, 'Doctor ID');
 
   async function FetchAPI() {
     const doctord = await showDoctorById({doctor_id: props.doctor});
-    console.log(doctord, 'Doctor Info');
+    //console.log(doctord, 'Doctor Info');
 
     if (doctord !== undefined) {
       setDoctor(doctord);
@@ -83,6 +83,8 @@ interface CEProps {
   reason?: string;
   status?: string;
   doctor_id: string;
+  emergency?: string;
+  onPress?(): void;
 }
 
 interface Status {
@@ -115,7 +117,7 @@ const Status = (props: Status) => {
 
 export const AppointmentCard = (props: CEProps) => {
   return (
-    <View style={styles.cont}>
+    <TouchableOpacity onPress={props.onPress} style={styles.cont}>
       <View style={{width: '30%'}}>
         <DayCard date={props.date} />
       </View>
@@ -130,8 +132,24 @@ export const AppointmentCard = (props: CEProps) => {
           <Status status={props.status} />
         </View>
         <EventDescCard doctor={props.doctor_id} reason={props.reason} />
+        {props.emergency?.toString() === '1' && (
+          <View
+            style={[
+              GlobalStyles.elevated_card,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: COLORS.danger,
+              },
+            ]}>
+            <Text
+              style={{letterSpacing: -1, fontWeight: 'bold', color: 'white'}}>
+              Emergency
+            </Text>
+          </View>
+        )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

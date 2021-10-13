@@ -16,7 +16,7 @@ import {AppointmentCard} from '../../../components/AppointmentCard';
 
 export const MyAppointments = ({navigation}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments]: any = useState([]);
   const [loader, setLoader] = useState(false);
   console.log(state);
   async function FetchAPI() {
@@ -24,7 +24,9 @@ export const MyAppointments = ({navigation}: any) => {
     const apt = await showPatientAllAppointments(state.id).finally(() => {
       setLoader(false);
     });
-    setAppointments(apt);
+    if (apt !== undefined) {
+      setAppointments(apt);
+    }
     console.log(apt, ' : Appointments');
   }
   useEffect(() => {
@@ -47,24 +49,12 @@ export const MyAppointments = ({navigation}: any) => {
                 reason={item.reason}
                 status={item.status}
                 doctor_id={item.doctor_id}
-                //onPress={() => setSelectedDoctor(item)}
+                emergency={item.emergency}
               />
             )}
           />
         </View>
       )}
-      {/* <ScrollView style={{width: '100%'}}>
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <View style={{width: '90%'}}>
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-            <AppointmentCard />
-          </View>
-        </View>
-      </ScrollView> */}
     </SafeAreaView>
   );
 };
