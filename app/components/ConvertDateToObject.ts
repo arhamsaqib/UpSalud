@@ -17,7 +17,7 @@ export const WeekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export function ConvertDateToObject(dte: string) {
   const date = new Date(dte);
-  console.log(date);
+  //console.log(date);
   const d = date.getDate();
   const month = Months[date.getMonth()];
   const year = date.getFullYear();

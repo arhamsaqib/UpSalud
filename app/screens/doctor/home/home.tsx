@@ -1,26 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  FlatList,
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {showDoctorAllAppointments} from '../../../api/doctorAppointment';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
 import {MyText} from '../../../core/text';
 import {GlobalStyles} from '../../../styles/globalStyles';
+import {showPatientById} from '../../../api/patientAppointments';
+import {useEffect} from 'react';
+import {ConvertDateToObject} from '../../../components/ConvertDateToObject';
+import {updateAppointment} from '../../../api/appointments';
 
 interface RequestCardP {
   reason?: string;
-  name?: string;
-  time?: string;
-  date?: string;
+  date?: any;
   location?: string;
-  emergency?: boolean;
+  emergency?: string;
+  patient_id: string;
+  onAcceptPress?(): void;
+  onRejectPress?(): void;
+  status?: string;
 }
 
 const RequestCard = (props: RequestCardP) => {
+  const [patient, setPatient]: any = useState([]);
+  async function FetchAPI() {
+    const data = await showPatientById({patient_id: props.patient_id});
+    if (data !== undefined) {
+      setPatient(data);
+    }
+    console.log(data, 'Patient Data');
+  }
+  useEffect(() => {
+    FetchAPI();
+  }, []);
+  const date = ConvertDateToObject(props.date);
+  const d: Date = new Date(props.date);
+
   return (
     <TouchableOpacity style={[GlobalStyles.elevated_card, {marginBottom: 10}]}>
       <View
@@ -28,7 +53,7 @@ const RequestCard = (props: RequestCardP) => {
           styles.field,
           {alignItems: 'center', justifyContent: 'flex-start'},
         ]}>
-        <MyText style={[styles.name]}>{props.name ?? 'Joe'} </MyText>
+        <MyText style={[styles.name]}>{patient.name} </MyText>
         <MyText style={[styles.name, {fontWeight: '200'}]}>
           needs your attention!
         </MyText>
@@ -46,10 +71,11 @@ const RequestCard = (props: RequestCardP) => {
       <View style={styles.field}>
         <MyText style={[styles.fieldHead]}>Time: </MyText>
         <MyText style={[{fontWeight: '300'}]}>
-          {props.time} | {props.date}
+          {d.getHours() + ':' + d.getMinutes()} |{' '}
+          {date.month + ' ' + date.date + ' ' + date.year + ' ' + date.day}
         </MyText>
       </View>
-      {props.emergency && (
+      {props.emergency?.toString() === '1' && (
         <View
           style={[
             GlobalStyles.elevated_card,
@@ -60,56 +86,99 @@ const RequestCard = (props: RequestCardP) => {
           </MyText>
         </View>
       )}
-      <View style={[styles.field, {justifyContent: 'space-between'}]}>
-        <View style={{width: '49%'}}>
-          <ButtonStandard
-            title="Accept"
-            style={{backgroundColor: COLORS.emerald_green}}
-          />
+
+      {props.status === 'pending' && (
+        <View style={[styles.field, {justifyContent: 'space-between'}]}>
+          <View style={{width: '49%'}}>
+            <ButtonStandard
+              title="Accept"
+              style={{backgroundColor: COLORS.emerald_green}}
+              onPress={props.onAcceptPress}
+            />
+          </View>
+          <View style={{width: '49%'}}>
+            <ButtonStandard
+              title="Reject"
+              style={{backgroundColor: COLORS.danger}}
+              onPress={props.onRejectPress}
+            />
+          </View>
         </View>
-        <View style={{width: '49%'}}>
-          <ButtonStandard
-            title="Reject"
-            style={{backgroundColor: COLORS.danger}}
-          />
-        </View>
-      </View>
+      )}
+      {props.status === 'active' && (
+        <ButtonStandard
+          disabled
+          title="Accepted"
+          style={{backgroundColor: COLORS.emerald_green}}
+        />
+      )}
+      {props.status === 'cencelled' && (
+        <ButtonStandard
+          disabled
+          title="Rejected"
+          style={{backgroundColor: COLORS.light_blue}}
+        />
+      )}
     </TouchableOpacity>
   );
 };
 
 export const DoctorHome = ({navigation}: any) => {
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
+  const [appointments, setAppointments] = useState([]);
+  const [loader, setLoader] = useState(false);
+  async function FetchAPI() {
+    setLoader(true);
+    const data = await showDoctorAllAppointments(state.id).finally(() =>
+      setLoader(false),
+    );
+    if (data !== undefined) {
+      setAppointments(data);
+    }
+  }
+  useEffect(() => {
+    FetchAPI();
+  }, []);
+  async function onAcceptPress(id: string) {
+    const status = 'active';
+    const update = await updateAppointment(id, {status: status}).finally(() => {
+      FetchAPI();
+    });
+    console.log(update, 'Update');
+  }
+  async function onRejectPress(id: string) {
+    const status = 'cancelled';
+    const update = await updateAppointment(id, {status: status}).finally(() => {
+      FetchAPI();
+    });
+    console.log(update, 'Update');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', marginBottom: 40}}>
         <MyText style={[styles.title, {fontSize: 20}]}>Home</MyText>
       </View>
-      <ScrollView style={{width: '100%'}}>
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <View style={{width: '90%'}}>
-            <MyText style={styles.title}>New Requests</MyText>
-            <RequestCard
-              name="John"
-              reason="Blood loss"
-              time="03:00 pm"
-              date="Oct 7 2021"
-            />
-            <RequestCard
-              name="Zoey"
-              reason="fever"
-              time="03:00 pm"
-              date="Oct 7 2021"
-            />
-            <RequestCard
-              name="Mark"
-              reason="Severe Blood Loss"
-              time="03:00 pm"
-              date="Oct 7 2021"
-              emergency
-            />
-          </View>
+      {loader && <ActivityIndicator color={COLORS.dark_blue} size="small" />}
+      {!loader && (
+        <View style={{width: '90%'}}>
+          <FlatList
+            data={appointments}
+            renderItem={({item, index}: any) => (
+              <View>
+                <RequestCard
+                  patient_id={item.uid}
+                  reason={item.reason}
+                  date={item.date}
+                  emergency={item.emergency}
+                  status={item.status}
+                  onAcceptPress={() => onAcceptPress(item.id)}
+                  onRejectPress={() => onRejectPress(item.id)}
+                />
+              </View>
+            )}
+          />
         </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

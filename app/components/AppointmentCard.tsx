@@ -4,7 +4,6 @@ import {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {showDoctorById} from '../api/doctorAppointment';
-import {showUser} from '../api/users';
 import {COLORS} from '../colors';
 import {GlobalStyles} from '../styles/globalStyles';
 import {ConvertDateToObject} from './ConvertDateToObject';

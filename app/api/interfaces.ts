@@ -35,5 +35,5 @@ export interface AppointmentsInterface {
 }
 
 export interface UpdateAppointment {
-  status: 'cancelled | active | completed | pending';
+  status: 'cancelled' | 'active' | 'completed' | 'pending';
 }

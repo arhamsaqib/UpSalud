@@ -18,7 +18,7 @@ export const MyAppointments = ({navigation}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
   const [appointments, setAppointments]: any = useState([]);
   const [loader, setLoader] = useState(false);
-  console.log(state);
+  //console.log(state);
   async function FetchAPI() {
     setLoader(true);
     const apt = await showPatientAllAppointments(state.id).finally(() => {
@@ -27,7 +27,7 @@ export const MyAppointments = ({navigation}: any) => {
     if (apt !== undefined) {
       setAppointments(apt);
     }
-    console.log(apt, ' : Appointments');
+    // console.log(apt, ' : Appointments');
   }
   useEffect(() => {
     FetchAPI();

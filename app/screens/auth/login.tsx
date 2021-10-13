@@ -29,9 +29,9 @@ export const Login = ({navigation}: any) => {
   //   return subscriber; // unsubscribe on unmount
   // }, []);
   async function verifyLaravelUser(uid: any) {
-    console.log(uid);
+    //console.log(uid);
     const user = await showUser(uid);
-    console.log(user);
+    // console.log(user);
     if (user.id !== undefined) {
       store.dispatch(
         SetUserAction({
