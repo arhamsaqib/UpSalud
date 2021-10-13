@@ -51,7 +51,7 @@ export const SelectDoctor = ({navigation, route}: any) => {
       uid: state.id.toString(),
       doctor_id: selectedDoctor.id.toString(),
       status: 'pending',
-      date: details.date.toString(),
+      date: details.date,
       lat: '0',
       lng: '0',
     };
