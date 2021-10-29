@@ -38,7 +38,7 @@ const RequestCard = (props: RequestCardP) => {
     if (data !== undefined) {
       setPatient(data);
     }
-    console.log(data, 'Patient Data');
+    //console.log(data, 'Patient Data');
   }
   useEffect(() => {
     FetchAPI();
@@ -144,14 +144,14 @@ export const DoctorHome = ({navigation}: any) => {
     const update = await updateAppointment(id, {status: status}).finally(() => {
       FetchAPI();
     });
-    console.log(update, 'Update');
+    //console.log(update, 'Update');
   }
   async function onRejectPress(id: string) {
     const status = 'cancelled';
     const update = await updateAppointment(id, {status: status}).finally(() => {
       FetchAPI();
     });
-    console.log(update, 'Update');
+    // console.log(update, 'Update');
   }
   return (
     <SafeAreaView style={styles.main}>

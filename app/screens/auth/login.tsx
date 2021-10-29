@@ -125,6 +125,25 @@ export const Login = ({navigation}: any) => {
           title="Login"
           onPress={onContinue}
         />
+
+        <ButtonStandard
+          loading={loader}
+          disabled={loader}
+          title="Doctor"
+          onPress={() => {
+            setEmail('shujasaqib@outlook.com');
+            setPassword('hahabisti123');
+          }}
+        />
+        <ButtonStandard
+          loading={loader}
+          disabled={loader}
+          title="Patient"
+          onPress={() => {
+            setEmail('arhamsaqib@outlook.com');
+            setPassword('hahabisti123');
+          }}
+        />
       </View>
     </SafeAreaView>
   );

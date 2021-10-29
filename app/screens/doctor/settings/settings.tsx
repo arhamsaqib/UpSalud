@@ -23,7 +23,7 @@ export const SettingsDoctor = ({navigation}: any) => {
           <MyText style={styles.fieldHead}>Profile</MyText>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Location Settings')}
+          onPress={() => navigation.navigate('Permanent Location Settings')}
           style={[GlobalStyles.elevated_card, styles.opt]}>
           <Icon
             style={{marginRight: 5}}
@@ -31,7 +31,7 @@ export const SettingsDoctor = ({navigation}: any) => {
             size={18}
             color={COLORS.blue}
           />
-          <MyText style={styles.fieldHead}>Location Settings</MyText>
+          <MyText style={styles.fieldHead}>Permanent Location</MyText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   fieldHead: {
-    width: '35%',
+    // width: '35%',
     fontWeight: 'bold',
     letterSpacing: -1,
     color: COLORS.blue,

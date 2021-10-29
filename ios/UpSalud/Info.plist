@@ -43,6 +43,12 @@
 	<string>Zocial.ttf</string>
 	<string>Fontisto.ttf</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location is required</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Your location is required</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Your location is required</string>
 
 	<key>NSAppTransportSecurity</key>
 	<dict>
