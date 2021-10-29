@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomDrawer} from '../../patient/drawerNav/DrawerDesign';
 import {AllAppointmentsDoctorStack} from '../allAppointments/allAppointmentsDoctorStack';
 import {HomeStackDoctor} from '../home/homeStackDoctor';
+import {SettingsStackDoctor} from '../settings/settingsStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -33,6 +34,16 @@ export const DoctorDrawerNav = () => {
         options={{
           drawerIcon: ({}) => (
             <Icon name="calendar-outline" size={18} color={COLORS.dark_blue} />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingsStackDoctor}
+        options={{
+          drawerIcon: ({}) => (
+            <Icon name="settings-outline" size={18} color={COLORS.dark_blue} />
           ),
           unmountOnBlur: true,
         }}
