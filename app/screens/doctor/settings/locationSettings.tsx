@@ -1,14 +1,11 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, {useState} from 'react';
+import {StyleSheet, View, ScrollView, SafeAreaView} from 'react-native';
 import {MyText} from '../../../core/text';
 import {COLORS} from '../../../colors';
 import {BackBtn} from '../../../core/backBtn';
 import Geolocation from '@react-native-community/geolocation';
 import {ButtonStandard} from '../../../core/button';
-import {useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import {ScrollView} from 'react-native-gesture-handler';
 
 export const PermanentLocationSettings = ({navigation}: any) => {
   const uri = require('../../../assets/images/marker.jpeg');
@@ -65,7 +62,7 @@ export const PermanentLocationSettings = ({navigation}: any) => {
                   //longitude: location.longitude,
                 }}
                 onDragEnd={(v: any) => {
-                  console.log(v.nativeEvent.coordinate, 'On Drag End');
+                  //console.log(v.nativeEvent.coordinate, 'On Drag End');
                   setRegion(v.nativeEvent.coordinate);
                 }}
                 icon={uri}
