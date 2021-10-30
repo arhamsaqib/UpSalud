@@ -1,6 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {PermanentLocationSettings} from './locationSettings';
+import {SetSpeciality} from './setSpeciality';
 import {SettingsDoctor} from './settings';
 
 const Stack = createStackNavigator();
@@ -13,6 +14,7 @@ export const SettingsStackDoctor = () => {
         name="Permanent Location Settings"
         component={PermanentLocationSettings}
       />
+      <Stack.Screen name="Set Speciality" component={SetSpeciality} />
     </Stack.Navigator>
   );
 };

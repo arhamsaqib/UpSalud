@@ -33,6 +33,17 @@ export const SettingsDoctor = ({navigation}: any) => {
           />
           <MyText style={styles.fieldHead}>Permanent Location</MyText>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Set Speciality')}
+          style={[GlobalStyles.elevated_card, styles.opt]}>
+          <Icon
+            style={{marginRight: 5}}
+            name="eyedrop-outline"
+            size={18}
+            color={COLORS.blue}
+          />
+          <MyText style={styles.fieldHead}>Set Speciality</MyText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
