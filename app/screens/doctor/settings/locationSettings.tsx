@@ -6,11 +6,16 @@ import {BackBtn} from '../../../core/backBtn';
 import Geolocation from '@react-native-community/geolocation';
 import {ButtonStandard} from '../../../core/button';
 import MapView, {Marker} from 'react-native-maps';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {saveDoctorInformation} from '../../../api/doctorLocation';
+import {Alert} from 'react-native';
 
 export const PermanentLocationSettings = ({navigation}: any) => {
   const uri = require('../../../assets/images/marker.jpeg');
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
 
   const [location, setLocation]: any = useState([]);
+  const [loader, setLoader] = useState(false);
   const [region, setRegion]: any = useState([]);
   async function onLocationGet() {
     Geolocation.getCurrentPosition(
@@ -24,7 +29,22 @@ export const PermanentLocationSettings = ({navigation}: any) => {
       {enableHighAccuracy: true},
     );
   }
-  async function onSavePress() {}
+  async function onSavePress() {
+    setLoader(true);
+    const data = {
+      doctor_id: state.id.toString(),
+      permanent_lat: region.latitude.toString(),
+      permanent_lng: region.longitude.toString(),
+      speciality: 'none',
+    };
+
+    const save = await saveDoctorInformation(data).finally(() => {
+      setLoader(false);
+    });
+    console.log(save, 'Location Update Status');
+    Alert.alert('Location updated!');
+    navigation.goBack();
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View
@@ -78,7 +98,12 @@ export const PermanentLocationSettings = ({navigation}: any) => {
         </View>
       </ScrollView>
       <View style={{width: '90%'}}>
-        <ButtonStandard title="Save Location" onPress={onSavePress} />
+        <ButtonStandard
+          title="Save Location"
+          onPress={onSavePress}
+          loading={loader}
+          disabled={loader}
+        />
       </View>
     </SafeAreaView>
   );
