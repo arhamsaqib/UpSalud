@@ -13,7 +13,9 @@ export const SettingsDoctor = ({navigation}: any) => {
         <MyText style={[styles.title, {fontSize: 20}]}>Settings</MyText>
       </View>
       <View style={{width: '90%'}}>
-        <TouchableOpacity style={[GlobalStyles.elevated_card, styles.opt]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Doctor Profile')}
+          style={[GlobalStyles.elevated_card, styles.opt]}>
           <Icon
             name="person-outline"
             size={18}
