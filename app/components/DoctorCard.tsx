@@ -1,4 +1,6 @@
 import React from 'react';
+import {useEffect} from 'react';
+import {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableOpacityProps,
 } from 'react-native';
+import {showDoctorById, showDoctors} from '../api/showDoctors';
 import {COLORS} from '../colors';
 
 interface FieldProps {
@@ -36,10 +39,31 @@ const Field = (props: FieldProps) => {
 interface DoctorCardProps extends TouchableOpacityProps {
   name?: string;
   selected?: boolean;
+  doctor_information: {
+    permanent_lat?: string;
+    permanent_lng?: string;
+    speciality?: string;
+    distance?: string;
+    doctor_id: string;
+  };
 }
 
 export const DoctorCard = (props: DoctorCardProps) => {
   const {style, ...rest} = props;
+  const [info, setInfo]: any = useState([]);
+  async function FetchAPI() {
+    const data = await showDoctorById({
+      doctor_id: props.doctor_information.doctor_id,
+    });
+    if (data.id !== undefined) {
+      setInfo(data);
+    }
+  }
+  //console.log(props.doctor_information, 'Doctor Infotmaiton');
+  useEffect(() => {
+    FetchAPI();
+  }, []);
+
   return (
     <TouchableOpacity
       {...rest}
@@ -61,8 +85,21 @@ export const DoctorCard = (props: DoctorCardProps) => {
         />
       </View>
       <View style={{width: '73%'}}>
-        <Field name="Name" value={'Dr. ' + props.name} />
-        {/* <Field name="Specialist" value="Heart Specialist" /> */}
+        <Field name="Name" value={'Dr. ' + info.name} />
+        <Field name="Specialist" value={props.doctor_information.speciality} />
+        <Field
+          name="Distance"
+          value={
+            (props.doctor_information.distance &&
+              (
+                Math.round(
+                  parseFloat(props.doctor_information.distance) * 100,
+                ) / 100
+              ).toFixed(2) + ' km') ??
+            'NA'
+          }
+          //value={props.doctor_information.distance?.fixed(2)}
+        />
       </View>
     </TouchableOpacity>
   );

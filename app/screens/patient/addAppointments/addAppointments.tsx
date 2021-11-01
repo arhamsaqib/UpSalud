@@ -48,6 +48,7 @@ export const AddAppointments = ({navigation}: any) => {
         emergency: emergency,
         reason: reason,
         date: date,
+        type: type,
       },
     });
   }

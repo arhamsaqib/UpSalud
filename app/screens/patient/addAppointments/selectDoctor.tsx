@@ -1,46 +1,81 @@
 import React from 'react';
 import {useState} from 'react';
 import {
-  Text,
   SafeAreaView,
   StyleSheet,
   View,
-  Touchable,
-  TouchableOpacity,
   Alert,
-  ScrollView,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {COLORS} from '../../../colors';
 import {ButtonStandard} from '../../../core/button';
-import {GlobalStyles} from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {MyText} from '../../../core/text';
 import {DoctorCard} from '../../../components/DoctorCard';
 import {useEffect} from 'react';
-import {showDoctors} from '../../../api/showDoctors';
+import {findAllDoctors, findDoctorByGPS} from '../../../api/findDoctorByGPS';
 import {FlatList} from 'react-native-gesture-handler';
 import {makeAppointment} from '../../../api/appointments';
 import {RootStateOrAny, useSelector} from 'react-redux';
+import {TextInputStandard} from '../../../core/textInput';
+import Geolocation from '@react-native-community/geolocation';
+import MapView, {Marker} from 'react-native-maps';
 
 export const SelectDoctor = ({navigation, route}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
+  const [location, setLocation]: any = useState([]);
+  const [showMaps, setShowMaps]: any = useState(false);
+  const [region, setRegion]: any = useState([]);
+  async function onLocationGet() {
+    Geolocation.getCurrentPosition(
+      info => {
+        //console.log(info.coords);
+
+        setLocation(info.coords);
+        setRegion(info.coords);
+      },
+      error => console.warn(error.message, 'Error'),
+      {enableHighAccuracy: true},
+    );
+  }
   async function FetchAPI() {
-    console.log(route.params, 'Params');
+    if (route.params.appointmentDetails.type === 'online') {
+      const res = await findAllDoctors().finally(() => {
+        setLoader(false);
+      });
+      if (res !== undefined) {
+        setDoctors(res);
+      }
+    }
+    if (route.params.appointmentDetails.type === 'facetoface') {
+      const data = {
+        lat: region.latitude,
+        lng: region.longitude,
+      };
 
-    const data = await showDoctors('doctor').finally(() => {
-      setLoader(false);
-    });
-    //console.log(data);
-
-    setDoctors(data);
+      // const data = {
+      //   lat: '31.572808555858092',
+      //   lng: '74.2008387',
+      // };
+      const res = await findDoctorByGPS(data).finally(() => {
+        setLoader(false);
+      });
+      console.log(res, 'Find Doctor By GPS');
+      if (res !== undefined) {
+        setDoctors(res);
+      }
+    }
   }
   useEffect(() => {
     setLoader(true);
+    onLocationGet();
     FetchAPI();
   }, []);
   const [doctors, setDoctors]: any = useState([]);
   const [selectedDoctor, setSelectedDoctor]: any = useState([]);
+  const uri = require('../../../assets/images/marker.jpeg');
+
   const [loader, setLoader]: any = useState([]);
   async function onAppointmentBook() {
     const details = route.params.appointmentDetails;
@@ -49,11 +84,11 @@ export const SelectDoctor = ({navigation, route}: any) => {
       reason: details.reason.toString(),
       emergency: details.emergency,
       uid: state.id.toString(),
-      doctor_id: selectedDoctor.id.toString(),
+      doctor_id: selectedDoctor.doctor_id.toString(),
       status: 'pending',
       date: details.date,
-      lat: '0',
-      lng: '0',
+      lat: region.latitude,
+      lng: region.longitude,
     };
     console.log(data);
 
@@ -65,6 +100,10 @@ export const SelectDoctor = ({navigation, route}: any) => {
       navigation.navigate('Add Appointments Main');
     }
   }
+  function onDragEnd(v: any) {
+    setRegion(v.nativeEvent.coordinate);
+    FetchAPI();
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -75,34 +114,114 @@ export const SelectDoctor = ({navigation, route}: any) => {
         />
         <MyText style={[styles.head, {fontSize: 18}]}>Select a Doctor</MyText>
       </View>
+
+      <View
+        style={[
+          {
+            width: '90%',
+            marginTop: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          },
+        ]}>
+        <MyText
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: COLORS.dark_blue,
+            letterSpacing: -1,
+          }}>
+          Type:
+        </MyText>
+        <MyText
+          style={{
+            color: COLORS.emerald_green,
+            fontWeight: 'bold',
+            letterSpacing: -1,
+          }}>
+          {route.params.appointmentDetails.type === 'facetoface' &&
+            'Face To Face'}
+          {route.params.appointmentDetails.type === 'online' && 'Online'}
+        </MyText>
+      </View>
+
       <View style={[{width: '90%', marginTop: 20}]}>
-        <TouchableOpacity
-          style={[
-            GlobalStyles.elevated_card,
-            {alignItems: 'center', backgroundColor: COLORS.light_blue},
-          ]}>
+        <TextInputStandard placeholder="Search Speciality" />
+        <ButtonStandard
+          onPress={() => setShowMaps(!showMaps)}
+          title={'Switch map view'}
+        />
+      </View>
+      {route.params.appointmentDetails.type === 'facetoface' && showMaps && (
+        <View style={{width: '90%'}}>
+          <MapView
+            style={{width: '100%', height: 400}}
+            //onRegionChange={onRegionChange}
+          >
+            <Marker
+              draggable
+              coordinate={{
+                latitude: location.latitude,
+                longitude: 74.1822552,
+                //longitude: location.longitude,
+              }}
+              onDragEnd={onDragEnd}
+              // onDragEnd={(v: any) => {
+              //   //console.log(v.nativeEvent.coordinate, 'On Drag End');
+              //   setRegion(v.nativeEvent.coordinate);
+              // }}
+              icon={uri}
+            />
+          </MapView>
+          <ButtonStandard
+            title="Get my location"
+            onPress={onLocationGet}
+            secondary
+            style={{borderWidth: 1, borderColor: COLORS.dark_blue}}
+          />
+        </View>
+      )}
+      {loader && <ActivityIndicator color={COLORS.dark_blue} size={'small'} />}
+      {route.params.appointmentDetails.type === 'facetoface' && (
+        <View style={[{width: '90%', marginTop: 20}]}>
           <MyText
-            style={[styles.head, {fontSize: 15, color: COLORS.text_blue}]}>
-            Search for a new Doctor
-          </MyText>
-        </TouchableOpacity>
-        <View style={[GlobalStyles.elevated_card, {alignItems: 'center'}]}>
-          <MyText
-            style={[styles.head, {fontSize: 15, color: COLORS.text_blue}]}>
-            Choose from previously contacted doctors
+            style={{
+              color: COLORS.dark_blue,
+              fontWeight: 'bold',
+              letterSpacing: -1,
+            }}>
+            Showing doctors in a 100 km radius
           </MyText>
         </View>
-      </View>
-      {loader && <ActivityIndicator color={COLORS.dark_blue} size={'small'} />}
+      )}
+      {doctors.length === 0 && (
+        <View
+          style={{
+            width: '90%',
+            height: 300,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <MyText
+            style={{
+              color: COLORS.danger,
+              fontWeight: 'bold',
+              letterSpacing: -1,
+            }}>
+            Sorry! We could not find any doctors near you
+          </MyText>
+        </View>
+      )}
       {!loader && (
         <View style={{width: '90%'}}>
           <FlatList
             data={doctors}
             renderItem={({item, index}: any) => (
               <DoctorCard
-                selected={selectedDoctor.id === item.id}
-                name={item.name}
+                selected={selectedDoctor.doctor_id === item.doctor_id}
                 onPress={() => setSelectedDoctor(item)}
+                doctor_information={item}
               />
             )}
           />
