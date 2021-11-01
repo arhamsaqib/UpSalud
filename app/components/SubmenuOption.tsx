@@ -16,9 +16,12 @@ interface BProps extends TouchableOpacityProps {
   iconName?: string;
   iconColor?: string;
 }
+interface SubMenuProps extends BProps {
+  selected?: boolean;
+}
 
-export const SubmenuOption = (props: BProps) => {
-  const {title, style, secondary, textStyle, ...rest} = props;
+export const SubmenuOption = (props: SubMenuProps) => {
+  const {title, style, secondary, textStyle, selected, ...rest} = props;
   return (
     <TouchableOpacity
       {...rest}
