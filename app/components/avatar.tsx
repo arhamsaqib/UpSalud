@@ -10,7 +10,7 @@ export const Avatar = (props: LogoProps) => {
   return (
     <Image
       style={[styles.main, props.style]}
-      source={require('../assets/images/arham.jpeg')}
+      source={require('../assets/images/person.png')}
     />
   );
 };

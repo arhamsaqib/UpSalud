@@ -87,8 +87,8 @@ export const SelectDoctor = ({navigation, route}: any) => {
       doctor_id: selectedDoctor.doctor_id.toString(),
       status: 'pending',
       date: details.date,
-      lat: region.latitude,
-      lng: region.longitude,
+      lat: region.latitude.toString(),
+      lng: region.longitude.toString(),
     };
     console.log(data);
 
@@ -148,10 +148,12 @@ export const SelectDoctor = ({navigation, route}: any) => {
 
       <View style={[{width: '90%', marginTop: 20}]}>
         <TextInputStandard placeholder="Search Speciality" />
-        <ButtonStandard
-          onPress={() => setShowMaps(!showMaps)}
-          title={'Switch map view'}
-        />
+        {route.params.appointmentDetails.type === 'facetoface' && (
+          <ButtonStandard
+            onPress={() => setShowMaps(!showMaps)}
+            title={'Switch map view'}
+          />
+        )}
       </View>
       {route.params.appointmentDetails.type === 'facetoface' && showMaps && (
         <View style={{width: '90%'}}>

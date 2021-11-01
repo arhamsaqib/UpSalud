@@ -12,11 +12,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {Avatar} from '../../../components/avatar';
 import {MyText} from '../../../core/text';
-import {ButtonStandard} from '../../../core/button';
 import {GlobalStyles} from '../../../styles/globalStyles';
 import auth from '@react-native-firebase/auth';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {showPatientById} from '../../../api/patientAppointments';
+import {showDoctorById} from '../../../api/doctorAppointment';
+import {useEffect} from 'react';
 
 export const CustomDrawer = (props: any) => {
+  const [user, setUser]: any = useState([]);
   async function onLogout() {
     auth()
       .signOut()
@@ -25,6 +29,30 @@ export const CustomDrawer = (props: any) => {
         props.navigation.navigate('Login');
       });
   }
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
+  //console.log(state);
+
+  async function FetchAPI() {
+    if (state.role === 'patient') {
+      const res = await showPatientById({patient_id: state.id});
+      //console.log(res, 'Patient');
+
+      if (res.id !== undefined) {
+        setUser(res);
+      }
+    }
+    if (state.role === 'doctor') {
+      const res = await showDoctorById({doctor_id: state.id});
+      //console.log(res, 'Doctor');
+
+      if (res.id !== undefined) {
+        setUser(res);
+      }
+    }
+  }
+  useEffect(() => {
+    FetchAPI();
+  }, []);
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={styles.header}>
@@ -42,20 +70,32 @@ export const CustomDrawer = (props: any) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             paddingBottom: '5%',
           }}>
-          <Avatar />
-          <View style={styles.headerTextCont}>
+          <View style={{width: '30%'}}>
+            <Avatar />
+          </View>
+          <View
+            style={[
+              styles.headerTextCont,
+              {
+                width: '40%',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              },
+            ]}>
             <MyText
               style={{
                 fontSize: 15,
                 fontWeight: 'bold',
                 letterSpacing: -1,
               }}>
-              Arham Saqib
+              {user.name ?? 'User'}
             </MyText>
-            <MyText style={{fontSize: 15, letterSpacing: -1}}>Lahore</MyText>
+            <MyText style={{fontSize: 15, letterSpacing: -1}}>
+              {user.role}
+            </MyText>
           </View>
         </View>
       </SafeAreaView>
