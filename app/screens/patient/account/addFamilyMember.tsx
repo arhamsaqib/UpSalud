@@ -41,7 +41,7 @@ export const AddFamilyMember = ({navigation}: any) => {
     const res = await storeFamilyMember(data).finally(() => {
       setLoader(false);
     });
-    console.log(res, 'Save response');
+    //console.log(res, 'Save response');
     Alert.alert('Saved!');
     navigation.goBack();
   }

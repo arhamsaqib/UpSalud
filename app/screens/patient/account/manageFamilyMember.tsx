@@ -5,6 +5,8 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {ButtonStandard} from '../../../core/button';
 import {MyText} from '../../../core/text';
@@ -12,6 +14,10 @@ import {TextInputStandard} from '../../../core/textInput';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {GlobalStyles} from '../../../styles/globalStyles';
+import {RootStateOrAny, useSelector} from 'react-redux';
+import {useState} from 'react';
+import {showUserAllFamilyMembers} from '../../../api/familyMembers';
+import {useEffect} from 'react';
 
 interface Member {
   name?: string;
@@ -31,6 +37,19 @@ export const Member = (props: Member) => {
 };
 
 export const ManageFamilyMembers = ({navigation}: any) => {
+  const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
+  const [members, setMembers] = useState([]);
+  const [loader, setLoader] = useState(false);
+  async function FetchAPI() {
+    setLoader(true);
+    const res = await showUserAllFamilyMembers(state.id).finally(() => {
+      setLoader(false);
+    });
+    setMembers(res);
+  }
+  useEffect(() => {
+    FetchAPI();
+  }, []);
   return (
     <SafeAreaView style={styles.main}>
       <View
@@ -46,13 +65,28 @@ export const ManageFamilyMembers = ({navigation}: any) => {
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.title}>Manage Family Members</Text>
+        {loader && (
+          <ActivityIndicator
+            color={COLORS.dark_blue}
+            style={{marginLeft: 10}}
+          />
+        )}
       </View>
 
       <View style={{width: '90%'}}>
-        <Member name="John Doe" relation="Father" />
+        {/* <Member name="John Doe" relation="Father" />
         <Member name="Jane Doe" relation="Mother" />
         <Member name="Alex Mason" relation="Cousin" />
-        <Member name="Mark" relation="Cousin" />
+        <Member name="Mark" relation="Cousin" /> */}
+        <FlatList
+          data={members}
+          renderItem={({item, index}: any) => (
+            <Member
+              name={item.fname + ' ' + item.lname}
+              relation={item.relation}
+            />
+          )}
+        />
       </View>
 
       <View style={styles.bottom}>
