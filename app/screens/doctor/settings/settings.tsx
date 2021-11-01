@@ -46,6 +46,17 @@ export const SettingsDoctor = ({navigation}: any) => {
           />
           <MyText style={styles.fieldHead}>Set Speciality</MyText>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Manage Family Members')}
+          style={[GlobalStyles.elevated_card, styles.opt]}>
+          <Icon
+            style={{marginRight: 5}}
+            name="people-outline"
+            size={18}
+            color={COLORS.blue}
+          />
+          <MyText style={styles.fieldHead}>Manage Family Members</MyText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
