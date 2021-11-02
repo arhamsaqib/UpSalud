@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   SafeAreaView,
@@ -9,19 +9,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {ButtonStandard} from '../../../core/button';
-import {MyText} from '../../../core/text';
-import {TextInputStandard} from '../../../core/textInput';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {GlobalStyles} from '../../../styles/globalStyles';
 import {RootStateOrAny, useSelector} from 'react-redux';
-import {useState} from 'react';
-import {showUserAllFamilyMembers} from '../../../api/familyMembers';
-import {useEffect} from 'react';
+import {
+  deleteFamilyMember,
+  showUserAllFamilyMembers,
+} from '../../../api/familyMembers';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 interface Member {
-  // name?: string;
-  // relation?: string;
   item: {
     uid: string;
     fname: string;
@@ -31,6 +29,7 @@ interface Member {
     age: string;
     relation: string;
   };
+  onDeletePress?(): void;
 }
 
 interface FieldProps {
@@ -58,20 +57,21 @@ const Field = (props: FieldProps) => {
 
 export const Member = (props: Member) => {
   return (
-    <TouchableOpacity
-      style={[styles.card, GlobalStyles.elevated_card, {marginVertical: 5}]}>
-      <Field title="Name" value={props.item.fname + ' ' + props.item.lname} />
-      <Field title="Relation" value={props.item.relation} />
-      <Field title="ID Number" value={props.item.id_number} />
-      <Field title="DOB" value={props.item.dob} />
-      <Field title="Age" value={props.item.age} />
-      {/* <Text style={[styles.head, {color: COLORS.dark_grey}]}>
-        {props.item.fname + ' ' + props.item.lname}
-      </Text>
-      <Text style={[styles.head, {color: COLORS.dark_blue, fontSize: 13}]}>
-        {props.item.relation}
-      </Text> */}
-    </TouchableOpacity>
+    <Swipeable
+      renderRightActions={() => (
+        <TouchableOpacity onPress={props.onDeletePress} style={styles.delBtn}>
+          <Icon name="trash-bin-outline" color="white" size={20} />
+        </TouchableOpacity>
+      )}>
+      <TouchableOpacity
+        style={[styles.card, GlobalStyles.elevated_card, {marginVertical: 5}]}>
+        <Field title="Name" value={props.item.fname + ' ' + props.item.lname} />
+        <Field title="Relation" value={props.item.relation} />
+        <Field title="ID Number" value={props.item.id_number} />
+        <Field title="DOB" value={props.item.dob} />
+        <Field title="Age" value={props.item.age} />
+      </TouchableOpacity>
+    </Swipeable>
   );
 };
 
@@ -89,6 +89,12 @@ export const ManageFamilyMembers = ({navigation}: any) => {
   useEffect(() => {
     FetchAPI();
   }, []);
+  async function onDeleteMember(id: string) {
+    const res = await deleteFamilyMember(id).finally(() => {
+      FetchAPI();
+    });
+    console.log(res, 'Delete Response');
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View
@@ -113,20 +119,12 @@ export const ManageFamilyMembers = ({navigation}: any) => {
       </View>
 
       <View style={{width: '90%'}}>
-        {/* <Member name="John Doe" relation="Father" />
-        <Member name="Jane Doe" relation="Mother" />
-        <Member name="Alex Mason" relation="Cousin" />
-        <Member name="Mark" relation="Cousin" /> */}
         <FlatList
           refreshing={false}
           onRefresh={FetchAPI}
           data={members}
           renderItem={({item, index}: any) => (
-            <Member
-              // name={item.fname + ' ' + item.lname}
-              // relation={item.relation}
-              item={item}
-            />
+            <Member item={item} onDeletePress={() => onDeleteMember(item.id)} />
           )}
         />
       </View>
@@ -176,10 +174,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   card: {
-    //alignItems: 'center',
     padding: 10,
-    //borderWidth: 1,
-    //flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  delBtn: {
+    backgroundColor: COLORS.danger,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 70,
+    marginLeft: 10,
+    borderRadius: 5,
   },
 });
