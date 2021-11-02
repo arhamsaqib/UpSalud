@@ -20,18 +20,57 @@ import {showUserAllFamilyMembers} from '../../../api/familyMembers';
 import {useEffect} from 'react';
 
 interface Member {
-  name?: string;
-  relation?: string;
+  // name?: string;
+  // relation?: string;
+  item: {
+    uid: string;
+    fname: string;
+    lname: string;
+    id_number: string;
+    dob: string;
+    age: string;
+    relation: string;
+  };
 }
+
+interface FieldProps {
+  title?: string;
+  value?: string;
+}
+
+const Field = (props: FieldProps) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+      <Text style={[styles.head, {color: COLORS.dark_grey}]}>
+        {props.title}
+      </Text>
+      <Text style={[styles.head, {color: COLORS.dark_blue, fontSize: 13}]}>
+        {props.value}
+      </Text>
+    </View>
+  );
+};
 
 export const Member = (props: Member) => {
   return (
     <TouchableOpacity
       style={[styles.card, GlobalStyles.elevated_card, {marginVertical: 5}]}>
-      <Text style={[styles.head, {color: COLORS.dark_grey}]}>{props.name}</Text>
-      <Text style={[styles.head, {color: COLORS.dark_blue, fontSize: 13}]}>
-        {props.relation}
+      <Field title="Name" value={props.item.fname + ' ' + props.item.lname} />
+      <Field title="Relation" value={props.item.relation} />
+      <Field title="ID Number" value={props.item.id_number} />
+      <Field title="DOB" value={props.item.dob} />
+      <Field title="Age" value={props.item.age} />
+      {/* <Text style={[styles.head, {color: COLORS.dark_grey}]}>
+        {props.item.fname + ' ' + props.item.lname}
       </Text>
+      <Text style={[styles.head, {color: COLORS.dark_blue, fontSize: 13}]}>
+        {props.item.relation}
+      </Text> */}
     </TouchableOpacity>
   );
 };
@@ -79,11 +118,14 @@ export const ManageFamilyMembers = ({navigation}: any) => {
         <Member name="Alex Mason" relation="Cousin" />
         <Member name="Mark" relation="Cousin" /> */}
         <FlatList
+          refreshing={false}
+          onRefresh={FetchAPI}
           data={members}
           renderItem={({item, index}: any) => (
             <Member
-              name={item.fname + ' ' + item.lname}
-              relation={item.relation}
+              // name={item.fname + ' ' + item.lname}
+              // relation={item.relation}
+              item={item}
             />
           )}
         />
@@ -134,10 +176,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   card: {
-    alignItems: 'center',
+    //alignItems: 'center',
     padding: 10,
     //borderWidth: 1,
-    flexDirection: 'row',
+    //flexDirection: 'row',
     justifyContent: 'space-between',
   },
 });
