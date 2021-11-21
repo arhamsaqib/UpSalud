@@ -184,5 +184,6 @@ const styles = StyleSheet.create({
     width: 70,
     marginLeft: 10,
     borderRadius: 5,
+    marginBottom: 5,
   },
 });

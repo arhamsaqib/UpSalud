@@ -163,6 +163,7 @@ export const DoctorHome = ({navigation}: any) => {
         <View style={{width: '90%'}}>
           <FlatList
             data={appointments}
+            style={{marginBottom: 40}}
             renderItem={({item, index}: any) => (
               <View>
                 <RequestCard

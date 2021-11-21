@@ -31,7 +31,6 @@ export const Login = ({navigation}: any) => {
   async function verifyLaravelUser(uid: any) {
     //console.log(uid);
     const user = await showUser(uid);
-    // console.log(user);
     if (user.id !== undefined) {
       store.dispatch(
         SetUserAction({
@@ -54,7 +53,6 @@ export const Login = ({navigation}: any) => {
       .then(userCredential => {
         setLoader(false);
         const uid = userCredential.user.uid;
-
         verifyLaravelUser(uid);
         //console.log('User account created & signed in!');
       })
