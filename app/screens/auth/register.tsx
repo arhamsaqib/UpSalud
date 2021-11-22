@@ -16,9 +16,19 @@ export const Register = ({navigation}: any) => {
   const [lname, setLname] = useState('');
   const [id, setId] = useState('');
   const [dob, setDob] = useState('');
+
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
+
   const [fmodal, setFModal] = useState(false);
+
+  const [relation, setRelation]: any = useState();
+  const [fnameRelative, setFnameRelative]: any = useState('');
+  const [lnameRelative, setLnameRelative]: any = useState('');
+  const [idNumberRelative, setIdNumberRelative]: any = useState('');
+  const [dobRelative, setDobRelative]: any = useState('');
+  const [ageRelative, setAgeRelative]: any = useState('');
+
   function onContinue() {
     const userInfo = {
       email: email,
@@ -28,6 +38,14 @@ export const Register = ({navigation}: any) => {
       dob: dob,
     };
 
+    const relativeInfo = {
+      fname: fnameRelative.toString(),
+      lname: lnameRelative.toString(),
+      relation: relation.toString(),
+      age: ageRelative.toString(),
+      dob: dobRelative.toString(),
+      id_number: idNumberRelative.toString(),
+    };
     var user_type;
     if (doctor) {
       user_type = 'doctor';
@@ -38,6 +56,7 @@ export const Register = ({navigation}: any) => {
     navigation.navigate('Set Password', {
       user_type: user_type,
       userInfo: userInfo,
+      relativeInfo: relativeInfo,
     });
   }
   function onDoctorSet(val: boolean) {
@@ -131,12 +150,13 @@ export const Register = ({navigation}: any) => {
                   style={styles.relCont}
                   onPress={() => setFModal(true)}>
                   <MyText style={{fontWeight: 'bold', letterSpacing: -1}}>
-                    Choose Relation
+                    {relation ?? 'Choose Relation'}
                   </MyText>
                 </TouchableOpacity>
                 <FamilyRelation
                   modalVisibility={fmodal}
                   onCancelPress={() => setFModal(false)}
+                  onSelect={setRelation}
                 />
                 <View
                   style={{
@@ -146,16 +166,14 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>First Name</MyText>
-                    <MyText style={styles.disabled}>{dtext}</MyText>
 
-                    <TextInputStandard editable={false} />
+                    <TextInputStandard onChangeText={setFnameRelative} />
                   </View>
 
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Last Name</MyText>
-                    <MyText style={styles.disabled}>{dtext}</MyText>
 
-                    <TextInputStandard editable={false} />
+                    <TextInputStandard onChangeText={setLnameRelative} />
                   </View>
                 </View>
                 <View
@@ -166,21 +184,21 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>ID Number</MyText>
-                    <MyText style={styles.disabled}>{dtext}</MyText>
 
-                    <TextInputStandard editable={false} />
+                    <TextInputStandard onChangeText={setIdNumberRelative} />
                   </View>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Age</MyText>
-                    <MyText style={styles.disabled}>{dtext}</MyText>
 
-                    <TextInputStandard keyboardType="number-pad" />
+                    <TextInputStandard
+                      keyboardType="number-pad"
+                      onChangeText={setAgeRelative}
+                    />
                   </View>
                 </View>
                 <MyText style={styles.title}>Date of Birth</MyText>
-                <MyText style={styles.disabled}>{dtext}</MyText>
 
-                <TextInputStandard editable={false} />
+                <TextInputStandard onChangeText={setDobRelative} />
               </View>
             )}
           </View>

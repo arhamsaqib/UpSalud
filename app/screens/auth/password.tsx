@@ -12,6 +12,7 @@ import {createUser} from '../../api/users';
 import {useStore} from 'react-redux';
 import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
 import {storeBasicInformation} from '../../api/basicInformation';
+import {storeFamilyMember} from '../../api/familyMembers';
 
 export const SetPassword = ({navigation, route}: any) => {
   useEffect(() => {
@@ -24,6 +25,7 @@ export const SetPassword = ({navigation, route}: any) => {
   const store = useStore();
   async function createLaravelUser(uid: string) {
     const uinfo = route.params.userInfo;
+    const relativeInfo = route.params.relativeInfo;
     const data = {
       name: route.params.userInfo.fname,
       email: route.params.userInfo.email,
@@ -52,7 +54,18 @@ export const SetPassword = ({navigation, route}: any) => {
       id_number: uinfo.idnumber,
     };
 
+    const relativeInfoData = {
+      fname: relativeInfo.fname.toString(),
+      lname: relativeInfo.lname.toString(),
+      relation: relativeInfo.relation.toString(),
+      age: relativeInfo.age.toString(),
+      dob: relativeInfo.dob.toString(),
+      id_number: relativeInfo.id_number.toString(),
+      uid: user.id.toString(),
+    };
+
     const basicInformationRes = await storeBasicInformation(basicData);
+    const familyMember = await storeFamilyMember(relativeInfoData);
 
     if (user.role === 'patient') {
       navigation.navigate('Patient');
