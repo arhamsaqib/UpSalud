@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "630929507531",
+    "project_id": "upsalud-4ea11",
+    "storage_bucket": "upsalud-4ea11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630929507531:android:fe909c024bad14d25b074e",
+        "android_client_info": {
+          "package_name": "com.upsalud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630929507531-jsqeh8gp0abpgfkc44rukv528q2916ek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upsalud",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "630929507531-5uphj7e38qt1uvhapmc2vei0fpl1863k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGfYDcgDBIG3w8NMaaLqMbbe8QeiQ1vd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630929507531-5uphj7e38qt1uvhapmc2vei0fpl1863k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "630929507531-saroiap4v6j6i695kh0hcldleth8vfq5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.UpSalud"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

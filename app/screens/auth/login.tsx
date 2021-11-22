@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../colors';
 import {MyText} from '../../core/text';
@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import {showUser} from '../../api/users';
 import {useStore} from 'react-redux';
 import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
+import { CheckApi } from '../../api/checkapi';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
@@ -46,6 +47,12 @@ export const Login = ({navigation}: any) => {
       navigation.navigate('Doctor');
     }
   }
+
+  async function onCheckApi(){
+      const res = await CheckApi()
+      Alert.alert(res)
+  }
+
   function onContinue() {
     setLoader(true);
     auth()
@@ -63,6 +70,9 @@ export const Login = ({navigation}: any) => {
 
         if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
+        }
+        if (error.code === 'auth/user-not-found') {
+          console.log('User not found!');
         }
 
         console.error(error);
@@ -124,7 +134,7 @@ export const Login = ({navigation}: any) => {
           onPress={onContinue}
         />
 
-        <ButtonStandard
+        {/* <ButtonStandard
           loading={loader}
           disabled={loader}
           title="Doctor"
@@ -141,7 +151,7 @@ export const Login = ({navigation}: any) => {
             setEmail('arhamsaqib@outlook.com');
             setPassword('hahabisti123');
           }}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   );
