@@ -59,6 +59,10 @@ export const AddAppointments = ({navigation}: any) => {
 
   const selectedDate = ConvertDateToObject(date.toString());
 
+  function disabled() {
+    return reason.length < 15 || type.length < 2;
+  }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%'}}>
@@ -67,8 +71,13 @@ export const AddAppointments = ({navigation}: any) => {
       <ScrollView style={{width: '100%'}}>
         <View style={{width: '100%', alignItems: 'center'}}>
           <View style={[{width: '90%', marginTop: 20}]}>
-            <Text style={[styles.head, {fontSize: 15, marginBottom: 10}]}>
-              Reason
+            <Text style={[styles.head, {fontSize: 15}]}>Reason</Text>
+            <Text
+              style={[
+                styles.head,
+                {fontSize: 12, marginBottom: 10, color: '#666666'},
+              ]}>
+              Min 15 characters
             </Text>
             <TextInputStandard
               onChangeText={setReason}
@@ -155,7 +164,7 @@ export const AddAppointments = ({navigation}: any) => {
         </View>
       </ScrollView>
       <View style={{width: '90%'}}>
-        <ButtonStandard title="Next" onPress={onNext} />
+        <ButtonStandard title="Next" onPress={onNext} disabled={disabled()} />
       </View>
     </SafeAreaView>
   );

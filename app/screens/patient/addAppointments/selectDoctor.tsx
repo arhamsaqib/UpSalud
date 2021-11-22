@@ -104,6 +104,11 @@ export const SelectDoctor = ({navigation, route}: any) => {
     setRegion(v.nativeEvent.coordinate);
     FetchAPI();
   }
+
+  function disabled() {
+    return selectedDoctor.length < 1;
+  }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -232,7 +237,7 @@ export const SelectDoctor = ({navigation, route}: any) => {
       <View style={{position: 'absolute', width: '90%', bottom: 20}}>
         <ButtonStandard
           title="Done"
-          disabled={loader}
+          disabled={loader || disabled()}
           loading={loader}
           onPress={onAppointmentBook}
         />

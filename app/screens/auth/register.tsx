@@ -46,6 +46,7 @@ export const Register = ({navigation}: any) => {
       dob: dobRelative.toString(),
       id_number: idNumberRelative.toString(),
     };
+
     var user_type;
     if (doctor) {
       user_type = 'doctor';
@@ -75,7 +76,6 @@ export const Register = ({navigation}: any) => {
       setDoctor(true);
     }
   }
-  const dtext = '(Disabled for testing)';
   function disabled() {
     return email.length < 8 || fname.length < 3 || id.length < 1;
   }

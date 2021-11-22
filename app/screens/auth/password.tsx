@@ -82,19 +82,6 @@ export const SetPassword = ({navigation, route}: any) => {
     // }
   }
 
-  function matchPasswords() {
-    if (confirmPassword.length === newPassword.length) {
-      if (newPassword.length >= 8) {
-        if (confirmPassword === newPassword) {
-          return true;
-        }
-        return false;
-      }
-      return false;
-    }
-    return false;
-  }
-
   function disabled() {
     return (
       newPassword.length < 8 ||
