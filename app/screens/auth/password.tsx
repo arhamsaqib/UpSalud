@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth';
 import {createUser} from '../../api/users';
 import {useStore} from 'react-redux';
 import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
+import {storeBasicInformation} from '../../api/basicInformation';
 
 export const SetPassword = ({navigation, route}: any) => {
   useEffect(() => {
@@ -21,12 +22,14 @@ export const SetPassword = ({navigation, route}: any) => {
   const [loading, setLoading] = useState(false);
   const store = useStore();
   async function createLaravelUser(uid: string) {
+    const uinfo = route.params.userInfo;
     const data = {
       name: route.params.userInfo.fname,
       email: route.params.userInfo.email,
       fuid: uid,
       role: route.params.user_type,
     };
+
     const user = await createUser(data).finally(() => {
       setLoading(false);
     });
@@ -39,6 +42,17 @@ export const SetPassword = ({navigation, route}: any) => {
         }),
       );
     }
+
+    const basicData = {
+      fname: uinfo.fname,
+      lname: uinfo.lname,
+      uid: user.id.toString(),
+      dob: uinfo.dob,
+      id_number: uinfo.idnumber,
+    };
+
+    const basicInformationRes = await storeBasicInformation(basicData);
+
     if (user.role === 'patient') {
       navigation.navigate('Patient');
     }

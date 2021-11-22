@@ -47,12 +47,7 @@ export const Login = ({navigation}: any) => {
       navigation.navigate('Doctor');
     }
   }
-
-  async function onCheckApi(){
-      const res = await CheckApi()
-      Alert.alert(res)
-  }
-
+  
   function onContinue() {
     setLoader(true);
     auth()

@@ -13,6 +13,9 @@ import {Switch} from 'react-native-gesture-handler';
 export const Register = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [fname, setFname] = useState('');
+  const [lname, setLname] = useState('');
+  const [id, setId] = useState('');
+  const [dob, setDob] = useState('');
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
   const [fmodal, setFModal] = useState(false);
@@ -20,9 +23,9 @@ export const Register = ({navigation}: any) => {
     const userInfo = {
       email: email,
       fname: fname,
-      lname: '',
-      idnumber: '',
-      dob: '',
+      lname: lname,
+      idnumber: id,
+      dob: dob,
     };
 
     var user_type;
@@ -70,20 +73,18 @@ export const Register = ({navigation}: any) => {
             <View style={styles.infoCont}>
               <MyText style={styles.title}>Email</MyText>
               <TextInputStandard onChangeText={setEmail} />
+
               <MyText style={styles.title}>First Name</MyText>
               <TextInputStandard onChangeText={setFname} />
+
               <MyText style={styles.title}>Last Name</MyText>
-              <MyText style={styles.disabled}>{dtext}</MyText>
+              <TextInputStandard onChangeText={setLname} />
 
-              <TextInputStandard editable={false} />
               <MyText style={styles.title}>ID Number</MyText>
-              <MyText style={styles.disabled}>{dtext}</MyText>
+              <TextInputStandard onChangeText={setId} />
 
-              <TextInputStandard editable={false} />
               <MyText style={styles.title}>Date of Birth</MyText>
-              <MyText style={styles.disabled}>{dtext}</MyText>
-
-              <TextInputStandard editable={false} />
+              <TextInputStandard onChangeText={setDob} />
             </View>
             <View style={styles.infoCont}>
               <View

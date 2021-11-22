@@ -7,6 +7,8 @@ import {ButtonStandard} from '../../core/button';
 import {MyText} from '../../core/text';
 import CheckBox from '@react-native-community/checkbox';
 import {Logo} from '../../components/logo';
+import { CheckApi } from '../../api/checkapi';
+import { Alert } from 'react-native';
 
 export const Welcome = ({navigation}: any) => {
   function onRegisterPress() {
@@ -15,6 +17,7 @@ export const Welcome = ({navigation}: any) => {
   function onLoginPress() {
     navigation.navigate('Login');
   }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{marginVertical: '15%', alignItems: 'center', width: '90%'}}>
