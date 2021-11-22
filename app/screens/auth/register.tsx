@@ -57,6 +57,10 @@ export const Register = ({navigation}: any) => {
     }
   }
   const dtext = '(Disabled for testing)';
+  function disabled() {
+    return email.length < 8 || fname.length < 3 || id.length < 1;
+  }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -71,16 +75,16 @@ export const Register = ({navigation}: any) => {
         <View style={{width: '100%', alignItems: 'center'}}>
           <View style={{width: '90%'}}>
             <View style={styles.infoCont}>
-              <MyText style={styles.title}>Email</MyText>
+              <MyText style={styles.title}>Email *</MyText>
               <TextInputStandard onChangeText={setEmail} />
 
-              <MyText style={styles.title}>First Name</MyText>
+              <MyText style={styles.title}>First Name *</MyText>
               <TextInputStandard onChangeText={setFname} />
 
               <MyText style={styles.title}>Last Name</MyText>
               <TextInputStandard onChangeText={setLname} />
 
-              <MyText style={styles.title}>ID Number</MyText>
+              <MyText style={styles.title}>ID Number *</MyText>
               <TextInputStandard onChangeText={setId} />
 
               <MyText style={styles.title}>Date of Birth</MyText>
@@ -181,7 +185,11 @@ export const Register = ({navigation}: any) => {
             )}
           </View>
           <View style={{width: '90%'}}>
-            <ButtonStandard title="Continue" onPress={onContinue} />
+            <ButtonStandard
+              title="Continue"
+              onPress={onContinue}
+              disabled={disabled()}
+            />
           </View>
         </View>
       </ScrollView>

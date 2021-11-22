@@ -18,6 +18,7 @@ export const SetPassword = ({navigation, route}: any) => {
     //console.log(route.params, 'Params');
   }, []);
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const store = useStore();
@@ -68,6 +69,27 @@ export const SetPassword = ({navigation, route}: any) => {
     // }
   }
 
+  function matchPasswords() {
+    if (confirmPassword.length === newPassword.length) {
+      if (newPassword.length >= 8) {
+        if (confirmPassword === newPassword) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  function disabled() {
+    return (
+      newPassword.length < 8 ||
+      confirmPassword.length < 8 ||
+      confirmPassword !== newPassword
+    );
+  }
+
   async function onPasswordEnter() {
     setLoading(true);
     auth()
@@ -107,8 +129,10 @@ export const SetPassword = ({navigation, route}: any) => {
             onChangeText={setNewPassword}
           />
           <MyText style={styles.title}>Confirm Password</MyText>
-          <MyText style={styles.disabled}>Disabled for testing</MyText>
-          <TextInputStandard secureTextEntry={!show} editable={false} />
+          <TextInputStandard
+            secureTextEntry={!show}
+            onChangeText={setConfirmPassword}
+          />
           <View
             style={{
               flexDirection: 'row',
@@ -122,7 +146,7 @@ export const SetPassword = ({navigation, route}: any) => {
           <ButtonStandard
             title="Continue"
             loading={loading}
-            disabled={loading}
+            disabled={disabled() || loading}
             onPress={onPasswordEnter}
           />
         </View>

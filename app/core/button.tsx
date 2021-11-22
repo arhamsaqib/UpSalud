@@ -23,7 +23,12 @@ export const ButtonStandard = (props: BProps) => {
   return (
     <TouchableOpacity
       {...rest}
-      style={[styles.btn, style, secondary && {backgroundColor: 'white'}]}>
+      style={[
+        styles.btn,
+        style,
+        secondary && {backgroundColor: 'white'},
+        props.disabled && styles.disabled,
+      ]}>
       <Text
         style={[
           {color: 'white', fontWeight: 'bold', letterSpacing: -1},
@@ -55,5 +60,8 @@ const styles = StyleSheet.create({
     //borderColor: COLORS.yellow,
     marginVertical: 5,
     flexDirection: 'row',
+  },
+  disabled: {
+    backgroundColor: 'grey',
   },
 });
