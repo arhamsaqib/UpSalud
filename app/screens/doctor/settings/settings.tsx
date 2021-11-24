@@ -5,8 +5,17 @@ import {MyText} from '../../../core/text';
 import {GlobalStyles} from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
+import {Alert} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 export const SettingsDoctor = ({navigation}: any) => {
+  function locationError() {
+    Toast.show({
+      type: 'error',
+      text1: 'Cant use react-native-maps on release version',
+      text2: 'Please purchase Google Maps API key',
+    });
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', marginBottom: 40}}>
@@ -25,7 +34,8 @@ export const SettingsDoctor = ({navigation}: any) => {
           <MyText style={styles.fieldHead}>Profile</MyText>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Permanent Location Settings')}
+          //onPress={() => navigation.navigate('Permanent Location Settings')}
+          onPress={locationError}
           style={[GlobalStyles.elevated_card, styles.opt]}>
           <Icon
             style={{marginRight: 5}}
@@ -58,6 +68,7 @@ export const SettingsDoctor = ({navigation}: any) => {
           <MyText style={styles.fieldHead}>Manage Family Members</MyText>
         </TouchableOpacity>
       </View>
+      <Toast position="bottom" />
     </SafeAreaView>
   );
 };

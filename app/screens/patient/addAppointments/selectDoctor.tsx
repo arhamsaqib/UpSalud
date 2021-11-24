@@ -21,6 +21,7 @@ import {RootStateOrAny, useSelector} from 'react-redux';
 import {TextInputStandard} from '../../../core/textInput';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker} from 'react-native-maps';
+import Toast from 'react-native-toast-message';
 
 export const SelectDoctor = ({navigation, route}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
@@ -109,6 +110,14 @@ export const SelectDoctor = ({navigation, route}: any) => {
     return selectedDoctor.length < 1;
   }
 
+  function locationError() {
+    Toast.show({
+      type: 'error',
+      text1: 'Cant use react-native-maps on release version',
+      text2: 'Please purchase Google Maps API key',
+    });
+  }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -155,7 +164,8 @@ export const SelectDoctor = ({navigation, route}: any) => {
         <TextInputStandard placeholder="Search Speciality" />
         {route.params.appointmentDetails.type === 'facetoface' && (
           <ButtonStandard
-            onPress={() => setShowMaps(!showMaps)}
+            onPress={locationError}
+            //onPress={() => setShowMaps(!showMaps)}
             title={'Switch map view'}
           />
         )}
@@ -242,6 +252,7 @@ export const SelectDoctor = ({navigation, route}: any) => {
           onPress={onAppointmentBook}
         />
       </View>
+      <Toast position="bottom" />
     </SafeAreaView>
   );
 };
