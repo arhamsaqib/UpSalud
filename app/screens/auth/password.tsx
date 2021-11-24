@@ -65,8 +65,11 @@ export const SetPassword = ({navigation, route}: any) => {
     };
 
     const basicInformationRes = await storeBasicInformation(basicData);
-    const familyMember = await storeFamilyMember(relativeInfoData);
 
+    if (relativeInfo.submit) {
+      const familyMember = await storeFamilyMember(relativeInfoData);
+      console.log(familyMember, 'Family member');
+    }
     if (user.role === 'patient') {
       navigation.navigate('Patient');
     }

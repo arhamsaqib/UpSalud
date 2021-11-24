@@ -18,6 +18,7 @@ import {
   showUserAllFamilyMembers,
 } from '../../../api/familyMembers';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {ConvertDateToObject} from '../../../components/ConvertDateToObject';
 
 interface Member {
   item: {
@@ -56,6 +57,7 @@ const Field = (props: FieldProps) => {
 };
 
 export const Member = (props: Member) => {
+  const dob = ConvertDateToObject(props.item.dob);
   return (
     <Swipeable
       renderRightActions={() => (
@@ -68,7 +70,10 @@ export const Member = (props: Member) => {
         <Field title="Name" value={props.item.fname + ' ' + props.item.lname} />
         <Field title="Relation" value={props.item.relation} />
         <Field title="ID Number" value={props.item.id_number} />
-        <Field title="DOB" value={props.item.dob} />
+        <Field
+          title="DOB"
+          value={dob.date + ' ' + dob.month + ' ' + dob.year}
+        />
         <Field title="Age" value={props.item.age} />
       </TouchableOpacity>
     </Swipeable>

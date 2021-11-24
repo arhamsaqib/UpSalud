@@ -1,5 +1,11 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Switch,
+} from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../colors';
 import {MyText} from '../../core/text';
@@ -8,25 +14,29 @@ import {FamilyRelation} from '../../components/RelationsModal';
 import {useState} from 'react';
 import {ButtonStandard} from '../../core/button';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Switch} from 'react-native-gesture-handler';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {ConvertDateToObject} from '../../components/ConvertDateToObject';
 
 export const Register = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
   const [id, setId] = useState('');
-  const [dob, setDob] = useState('');
+  const [dob, setDob]: any = useState(new Date());
 
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
+  const [family, setFamily] = useState(false);
+  const [dateModal, setDateModal] = useState(false);
+  const [relativeDateModal, setRelativeDateModal] = useState(false);
 
   const [fmodal, setFModal] = useState(false);
 
-  const [relation, setRelation]: any = useState();
+  const [relation, setRelation]: any = useState('');
   const [fnameRelative, setFnameRelative]: any = useState('');
   const [lnameRelative, setLnameRelative]: any = useState('');
   const [idNumberRelative, setIdNumberRelative]: any = useState('');
-  const [dobRelative, setDobRelative]: any = useState('');
+  const [dobRelative, setDobRelative]: any = useState(new Date());
   const [ageRelative, setAgeRelative]: any = useState('');
 
   function onContinue() {
@@ -45,6 +55,7 @@ export const Register = ({navigation}: any) => {
       age: ageRelative.toString(),
       dob: dobRelative.toString(),
       id_number: idNumberRelative.toString(),
+      submit: family,
     };
 
     var user_type;
@@ -77,8 +88,40 @@ export const Register = ({navigation}: any) => {
     }
   }
   function disabled() {
-    return email.length < 8 || fname.length < 3 || id.length < 1;
+    return (
+      email.length < 8 ||
+      fname.length < 3 ||
+      id.length < 1 ||
+      lname.length < 3 ||
+      dob.toString().length < 3
+    );
   }
+  function disabledF() {
+    if (family) {
+      return (
+        relation.length < 2 ||
+        fnameRelative.length < 3 ||
+        idNumberRelative.length < 1 ||
+        lnameRelative.length < 3 ||
+        dobRelative.length < 3 ||
+        ageRelative < 1
+      );
+    } else {
+      return false;
+    }
+  }
+
+  const handleConfirm = (date: Date) => {
+    setDob(date);
+    setDateModal(false);
+  };
+  const handleConfirmRelative = (date: Date) => {
+    setDobRelative(date);
+    setRelativeDateModal(false);
+  };
+
+  const selectedDob = ConvertDateToObject(dob.toString());
+  const relativeSelectedDob = ConvertDateToObject(dobRelative.toString());
 
   return (
     <SafeAreaView style={styles.main}>
@@ -94,20 +137,46 @@ export const Register = ({navigation}: any) => {
         <View style={{width: '100%', alignItems: 'center'}}>
           <View style={{width: '90%'}}>
             <View style={styles.infoCont}>
-              <MyText style={styles.title}>Email *</MyText>
+              <MyText style={styles.title}>Email</MyText>
+              <MyText style={styles.disabled}>Required</MyText>
               <TextInputStandard onChangeText={setEmail} />
 
-              <MyText style={styles.title}>First Name *</MyText>
+              <MyText style={styles.title}>First Name</MyText>
+              <MyText style={styles.disabled}>Required</MyText>
+
               <TextInputStandard onChangeText={setFname} />
 
               <MyText style={styles.title}>Last Name</MyText>
+              <MyText style={styles.disabled}>Required</MyText>
+
               <TextInputStandard onChangeText={setLname} />
 
-              <MyText style={styles.title}>ID Number *</MyText>
+              <MyText style={styles.title}>ID Number</MyText>
+              <MyText style={styles.disabled}>Required</MyText>
+
               <TextInputStandard onChangeText={setId} />
 
               <MyText style={styles.title}>Date of Birth</MyText>
-              <TextInputStandard onChangeText={setDob} />
+              <MyText style={styles.disabled}>Required</MyText>
+
+              {/* <TextInputStandard onChangeText={setDob} /> */}
+              <TouchableOpacity
+                style={styles.relCont}
+                onPress={() => setDateModal(true)}>
+                <MyText style={{fontWeight: 'bold', letterSpacing: -1}}>
+                  {selectedDob.date +
+                    ' ' +
+                    selectedDob.month +
+                    ' ' +
+                    selectedDob.year}
+                </MyText>
+              </TouchableOpacity>
+              <DateTimePickerModal
+                isVisible={dateModal}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={() => setDateModal(false)}
+              />
             </View>
             <View style={styles.infoCont}>
               <View
@@ -131,7 +200,27 @@ export const Register = ({navigation}: any) => {
                 <Switch onValueChange={onPatientSet} value={patient} />
               </View>
             </View>
-            {patient && (
+            <View
+              style={[
+                styles.infoCont,
+                {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                },
+              ]}>
+              <MyText
+                style={[
+                  styles.title,
+                  {
+                    color: COLORS.dark_blue,
+                  },
+                ]}>
+                Register family
+              </MyText>
+              <Switch onValueChange={setFamily} value={family} />
+            </View>
+            {family && (
               <View style={styles.infoCont}>
                 <MyText
                   style={[
@@ -144,8 +233,9 @@ export const Register = ({navigation}: any) => {
                   ]}>
                   Register a Family Member
                 </MyText>
-                {/* <MyText style={styles.title}></MyText>
-          <TextInputStandard /> */}
+                <MyText style={styles.title}>Select Relation</MyText>
+                <MyText style={styles.disabled}>Required</MyText>
+
                 <TouchableOpacity
                   style={styles.relCont}
                   onPress={() => setFModal(true)}>
@@ -166,12 +256,14 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>First Name</MyText>
+                    <MyText style={styles.disabled}>Required</MyText>
 
                     <TextInputStandard onChangeText={setFnameRelative} />
                   </View>
 
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Last Name</MyText>
+                    <MyText style={styles.disabled}>Required</MyText>
 
                     <TextInputStandard onChangeText={setLnameRelative} />
                   </View>
@@ -184,11 +276,13 @@ export const Register = ({navigation}: any) => {
                   }}>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>ID Number</MyText>
+                    <MyText style={styles.disabled}>Required</MyText>
 
                     <TextInputStandard onChangeText={setIdNumberRelative} />
                   </View>
                   <View style={{width: '45%'}}>
                     <MyText style={styles.title}>Age</MyText>
+                    <MyText style={styles.disabled}>Required</MyText>
 
                     <TextInputStandard
                       keyboardType="number-pad"
@@ -196,9 +290,27 @@ export const Register = ({navigation}: any) => {
                     />
                   </View>
                 </View>
-                <MyText style={styles.title}>Date of Birth</MyText>
 
-                <TextInputStandard onChangeText={setDobRelative} />
+                <MyText style={styles.title}>Date of Birth</MyText>
+                <MyText style={styles.disabled}>Required</MyText>
+
+                <TouchableOpacity
+                  style={styles.relCont}
+                  onPress={() => setRelativeDateModal(true)}>
+                  <MyText style={{fontWeight: 'bold', letterSpacing: -1}}>
+                    {relativeSelectedDob.date +
+                      ' ' +
+                      relativeSelectedDob.month +
+                      ' ' +
+                      relativeSelectedDob.year}
+                  </MyText>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={relativeDateModal}
+                  mode="date"
+                  onConfirm={handleConfirmRelative}
+                  onCancel={() => setRelativeDateModal(false)}
+                />
               </View>
             )}
           </View>
@@ -206,7 +318,7 @@ export const Register = ({navigation}: any) => {
             <ButtonStandard
               title="Continue"
               onPress={onContinue}
-              disabled={disabled()}
+              disabled={disabled() || disabledF()}
             />
           </View>
         </View>
