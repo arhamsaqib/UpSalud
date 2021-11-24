@@ -11,12 +11,13 @@ import auth from '@react-native-firebase/auth';
 import {showUser} from '../../api/users';
 import {useStore} from 'react-redux';
 import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
-import { CheckApi } from '../../api/checkapi';
+import {CheckApi} from '../../api/checkapi';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
+  const [error, setError] = useState(false);
   const store = useStore();
   // const [initializing, setInitializing] = useState(true);
   // const [user, setUser] = useState();
@@ -47,9 +48,10 @@ export const Login = ({navigation}: any) => {
       navigation.navigate('Doctor');
     }
   }
-  
+
   function onContinue() {
     setLoader(true);
+    setError(false);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(userCredential => {
@@ -59,18 +61,20 @@ export const Login = ({navigation}: any) => {
         //console.log('User account created & signed in!');
       })
       .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
+        setLoader(false);
+        setError(true);
+        // if (error === 'auth/email-already-in-use') {
+        //   console.log('That email address is already in use!');
+        // }
 
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-        if (error.code === 'auth/user-not-found') {
-          console.log('User not found!');
-        }
+        // if (error === 'auth/invalid-email') {
+        //   console.log('That email address is invalid!');
+        // }
+        // if (error === 'auth/user-not-found') {
+        //   console.log('User not found!');
+        // }
 
-        console.error(error);
+        //console.error(error[0].error, 'Errro');
       });
     //navigation.navigate('Patient');
   }
@@ -78,6 +82,11 @@ export const Login = ({navigation}: any) => {
   function onForget() {
     navigation.navigate('Forget Password');
   }
+
+  function disabled() {
+    return email.length < 8 || password.length < 8;
+  }
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
@@ -97,6 +106,11 @@ export const Login = ({navigation}: any) => {
             onChangeText={setPassword}
             secureTextEntry={!show}
           />
+          {error && (
+            <Text style={styles.errorTxt}>
+              Sorry! We could not find an account with these credentials
+            </Text>
+          )}
           <View
             style={{
               flexDirection: 'row',
@@ -124,7 +138,7 @@ export const Login = ({navigation}: any) => {
       <View style={{width: '90%'}}>
         <ButtonStandard
           loading={loader}
-          disabled={loader}
+          disabled={loader || disabled()}
           title="Login"
           onPress={onContinue}
         />
@@ -186,5 +200,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     marginVertical: 10,
+  },
+  errorTxt: {
+    letterSpacing: -1,
+    color: COLORS.danger,
+    fontSize: 12,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
