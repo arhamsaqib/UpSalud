@@ -9,6 +9,7 @@ import {HelpStack} from '../help/helpStack';
 import {CustomDrawer} from './DrawerDesign';
 import {COLORS} from '../../../colors';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {PaymentStack} from '../../doctor/payment/paymentStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -92,6 +93,16 @@ export const PatientDrawerNav = () => {
               size={18}
               color={COLORS.dark_blue}
             />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Drawer.Screen
+        name="Payment"
+        component={PaymentStack}
+        options={{
+          drawerIcon: ({}) => (
+            <Icon name="card-outline" size={18} color={COLORS.dark_blue} />
           ),
           unmountOnBlur: true,
         }}

@@ -7,6 +7,7 @@ import {CustomDrawer} from '../../patient/drawerNav/DrawerDesign';
 import {AllAppointmentsDoctorStack} from '../allAppointments/allAppointmentsDoctorStack';
 import {HomeStackDoctor} from '../home/homeStackDoctor';
 import {SettingsStackDoctor} from '../settings/settingsStack';
+import {PaymentStack} from '../payment/paymentStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -44,6 +45,16 @@ export const DoctorDrawerNav = () => {
         options={{
           drawerIcon: ({}) => (
             <Icon name="settings-outline" size={18} color={COLORS.dark_blue} />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Drawer.Screen
+        name="Payment"
+        component={PaymentStack}
+        options={{
+          drawerIcon: ({}) => (
+            <Icon name="card-outline" size={18} color={COLORS.dark_blue} />
           ),
           unmountOnBlur: true,
         }}
