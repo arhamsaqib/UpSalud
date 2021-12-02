@@ -22,6 +22,7 @@ import {TextInputStandard} from '../../../core/textInput';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, {Marker} from 'react-native-maps';
 import Toast from 'react-native-toast-message';
+import {GlobalStyles} from '../../../styles/globalStyles';
 
 export const SelectDoctor = ({navigation, route}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
@@ -59,6 +60,10 @@ export const SelectDoctor = ({navigation, route}: any) => {
       //   lat: '31.572808555858092',
       //   lng: '74.2008387',
       // };
+      // const data = {
+      //   lat: location.latitude,
+      //   lng: location.longitude,
+      // };
       const res = await findDoctorByGPS(data).finally(() => {
         setLoader(false);
       });
@@ -88,10 +93,12 @@ export const SelectDoctor = ({navigation, route}: any) => {
       doctor_id: selectedDoctor.doctor_id.toString(),
       status: 'pending',
       date: details.date,
-      lat: region.latitude.toString(),
-      lng: region.longitude.toString(),
+      // lat: region.latitude.toString(),
+      // lng: region.longitude.toString(),
+      lat: '31.572808555858092',
+      lng: '74.2008387',
     };
-    console.log(data);
+    console.log(data, 'Data to submit');
 
     const setApt = await makeAppointment(data).finally(() => setLoader(false));
     console.log(setApt);
@@ -162,6 +169,15 @@ export const SelectDoctor = ({navigation, route}: any) => {
 
       <View style={[{width: '90%', marginTop: 20}]}>
         <TextInputStandard placeholder="Search Speciality" />
+        <View style={[GlobalStyles.elevated_card]}>
+          <MyText>Latitude: {location.latitude}</MyText>
+          <MyText>Longitude: {location.longitude}</MyText>
+        </View>
+        <ButtonStandard
+          onPress={onLocationGet}
+          //onPress={() => setShowMaps(!showMaps)}
+          title={'Get my location'}
+        />
         {route.params.appointmentDetails.type === 'facetoface' && (
           <ButtonStandard
             onPress={locationError}
