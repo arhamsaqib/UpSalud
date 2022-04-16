@@ -29,6 +29,8 @@ interface RequestCardP {
   onAcceptPress?(): void;
   onRejectPress?(): void;
   status?: string;
+  onPress?(): void;
+  onChatPress?(): void;
 }
 
 const RequestCard = (props: RequestCardP) => {
@@ -47,7 +49,9 @@ const RequestCard = (props: RequestCardP) => {
   const d: Date = new Date(props.date);
 
   return (
-    <TouchableOpacity style={[GlobalStyles.elevated_card, {marginBottom: 10}]}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[GlobalStyles.elevated_card, {marginBottom: 10}]}>
       <View
         style={[
           styles.field,
@@ -112,6 +116,13 @@ const RequestCard = (props: RequestCardP) => {
           style={{backgroundColor: COLORS.emerald_green}}
         />
       )}
+      {props.status === 'active' && (
+        <ButtonStandard
+          title="Chat"
+          style={{backgroundColor: COLORS.green}}
+          onPress={props.onChatPress}
+        />
+      )}
       {props.status === 'cencelled' && (
         <ButtonStandard
           disabled
@@ -174,6 +185,9 @@ export const DoctorHome = ({navigation}: any) => {
                   status={item.status}
                   onAcceptPress={() => onAcceptPress(item.id)}
                   onRejectPress={() => onRejectPress(item.id)}
+                  onChatPress={() =>
+                    navigation.navigate('fChat', {receiverId: item.uid})
+                  }
                 />
               </View>
             )}

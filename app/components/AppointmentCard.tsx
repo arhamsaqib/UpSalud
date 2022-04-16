@@ -84,6 +84,7 @@ interface CEProps {
   doctor_id: string;
   emergency?: string;
   onPress?(): void;
+  onChatPress?(): void;
 }
 
 interface Status {
@@ -146,6 +147,23 @@ export const AppointmentCard = (props: CEProps) => {
               Emergency
             </Text>
           </View>
+        )}
+        {props.status === 'active' && (
+          <TouchableOpacity
+            onPress={props.onChatPress}
+            style={[
+              GlobalStyles.elevated_card,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: COLORS.green,
+              },
+            ]}>
+            <Text
+              style={{letterSpacing: -1, fontWeight: 'bold', color: 'white'}}>
+              Chat
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
     </TouchableOpacity>

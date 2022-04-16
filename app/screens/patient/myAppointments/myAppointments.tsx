@@ -50,6 +50,9 @@ export const MyAppointments = ({navigation}: any) => {
                 status={item.status}
                 doctor_id={item.doctor_id}
                 emergency={item.emergency}
+                onChatPress={() =>
+                  navigation.navigate('fChat', {receiverId: item.doctor_id})
+                }
               />
             )}
           />
