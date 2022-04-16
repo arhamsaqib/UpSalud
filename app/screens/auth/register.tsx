@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Switch,
+  Alert,
 } from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../colors';
@@ -16,18 +17,21 @@ import {ButtonStandard} from '../../core/button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../components/ConvertDateToObject';
+//@ts-ignore
+import {format, isValid, validate} from './components/rut';
 
 export const Register = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
-  const [id, setId] = useState('');
+  const [id, setId]: any = useState('');
   const [dob, setDob]: any = useState(new Date());
 
   const [doctor, setDoctor] = useState(false);
   const [patient, setPatient] = useState(true);
   const [family, setFamily] = useState(false);
   const [dateModal, setDateModal] = useState(false);
+  const [validation, setValidation] = useState(false);
   const [relativeDateModal, setRelativeDateModal] = useState(false);
 
   const [fmodal, setFModal] = useState(false);
@@ -40,6 +44,10 @@ export const Register = ({navigation}: any) => {
   const [ageRelative, setAgeRelative]: any = useState('');
 
   function onContinue() {
+    if (!RutValidate()) {
+      Alert.alert('Rut validation not passed!');
+      return;
+    }
     const userInfo = {
       email: email,
       fname: fname,
@@ -93,7 +101,8 @@ export const Register = ({navigation}: any) => {
       fname.length < 3 ||
       id.length < 1 ||
       lname.length < 3 ||
-      dob.toString().length < 3
+      dob.toString().length < 3 ||
+      !validation
     );
   }
   function disabledF() {
@@ -111,6 +120,23 @@ export const Register = ({navigation}: any) => {
     }
   }
 
+  const RutValidate = () => {
+    if (!validate(id)) {
+      //alert('El RUT ingresado no es correcto, intentalo denuevo.');
+      setId('');
+      setValidation(false);
+      return false;
+      //e.target.focus()
+    } else {
+      setValidation(true);
+      return true;
+    }
+  };
+  const RutFormat = (e: any) => {
+    if (isValid(e)) {
+      setId(format(e));
+    }
+  };
   const handleConfirm = (date: Date) => {
     setDob(date);
     setDateModal(false);
@@ -151,10 +177,34 @@ export const Register = ({navigation}: any) => {
 
               <TextInputStandard onChangeText={setLname} />
 
-              <MyText style={styles.title}>ID Number</MyText>
-              <MyText style={styles.disabled}>Required</MyText>
+              <MyText style={[styles.title]}>ID Number{''}</MyText>
 
-              <TextInputStandard onChangeText={setId} />
+              <MyText style={styles.disabled}>
+                Validation Required{'      '}
+                <MyText
+                  onPress={RutValidate}
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 'bold',
+                    color: COLORS.emerald_green,
+                  }}>
+                  Tap to check
+                </MyText>
+              </MyText>
+
+              <MyText
+                style={[
+                  styles.disabled,
+                  validation && {color: COLORS.emerald_green},
+                ]}>
+                {validation ? 'Passed' : 'Not Passed'}
+              </MyText>
+
+              <TextInputStandard
+                onChangeText={RutFormat}
+                value={id}
+                onBlur={RutValidate}
+              />
 
               <MyText style={styles.title}>Date of Birth</MyText>
               <MyText style={styles.disabled}>Required</MyText>
