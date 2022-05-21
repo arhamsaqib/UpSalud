@@ -10,7 +10,7 @@ export const Logo = (props: LogoProps) => {
   return (
     <Image
       style={[styles.main, props.style]}
-      source={require('../assets/logo/tempLogo.png')}
+      source={require('../assets/logo/logo-white.png')}
     />
   );
 };

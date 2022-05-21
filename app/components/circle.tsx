@@ -11,8 +11,8 @@ export const Circle = (props: CircleProps) => {
 
 const styles = StyleSheet.create({
   main: {
-    height: 20,
-    width: 20,
+    height: 15,
+    width: 15,
     borderWidth: 2,
     borderColor: 'black',
     borderRadius: 20,

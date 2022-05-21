@@ -3,6 +3,8 @@ import {Text, SafeAreaView, StyleSheet, View, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {ChatCard} from '../../../components/ChatCard';
+import {MenuIcon} from '../../../components/menuIcon';
+import {MyText} from '../../../core/text';
 import {GlobalStyles} from '../../../styles/globalStyles';
 
 export const Chat = ({navigation}: any) => {
@@ -11,10 +13,18 @@ export const Chat = ({navigation}: any) => {
   }
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 20}}>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
         <Text style={styles.title}>Chat</Text>
       </View>
-      <ScrollView style={{width: '100%'}}>
+      <MyText>Nothing here to see !</MyText>
+      {/* <ScrollView style={{width: '100%'}}>
         <View style={{width: '100%', alignItems: 'center'}}>
           <View style={{width: '90%'}}>
             <ChatCard onPress={onChatPress} />
@@ -25,7 +35,7 @@ export const Chat = ({navigation}: any) => {
             <ChatCard onPress={onChatPress} />
           </View>
         </View>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../colors';
@@ -9,16 +9,34 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {Switch} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import {showUser} from '../../api/users';
-import {useStore} from 'react-redux';
+import {RootStateOrAny, useSelector, useStore} from 'react-redux';
 import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
 import {CheckApi} from '../../api/checkapi';
+import {CheckBox} from '../../components/checkBox';
+import rememberMeAction from '../../redux/actions/rememberMeAction';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
+
   const store = useStore();
+
+  const [rememberMe, setRememberMe] = useState(false);
+  const state = useSelector((state: RootStateOrAny) => state.rememberMe);
+  function checkRememberMe() {
+    if (state.rememberMe) {
+      setEmail(state.email);
+      setPassword(state.password);
+      setRememberMe(state.rememberMe);
+    }
+  }
+
+  useEffect(() => {
+    checkRememberMe();
+  }, []);
+
   // const [initializing, setInitializing] = useState(true);
   // const [user, setUser] = useState();
   // function onAuthStateChanged(user: any) {
@@ -40,6 +58,24 @@ export const Login = ({navigation}: any) => {
           role: user.role,
         }),
       );
+
+      if (rememberMe) {
+        store.dispatch(
+          rememberMeAction({
+            email: email,
+            password: password,
+            rememberMe: true,
+          }),
+        );
+      } else {
+        store.dispatch(
+          rememberMeAction({
+            email: '',
+            password: '',
+            rememberMe: false,
+          }),
+        );
+      }
     }
     if (user.role === 'patient') {
       navigation.navigate('Patient');
@@ -53,7 +89,7 @@ export const Login = ({navigation}: any) => {
     setLoader(true);
     setError(false);
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email.trim(), password.trim())
       .then(userCredential => {
         setLoader(false);
         const uid = userCredential.user.uid;
@@ -100,12 +136,17 @@ export const Login = ({navigation}: any) => {
       <View style={{width: '90%'}}>
         <View style={styles.infoCont}>
           <MyText style={styles.title}>Email</MyText>
-          <TextInputStandard onChangeText={setEmail} />
+          <TextInputStandard value={email} onChangeText={setEmail} />
           <MyText style={styles.title}>Password</MyText>
           <TextInputStandard
             onChangeText={setPassword}
             secureTextEntry={!show}
+            value={password}
           />
+          <View style={styles.row}>
+            <MyText style={styles.rememberMe}>Remember Me</MyText>
+            <CheckBox onChangeVal={setRememberMe} value={rememberMe} />
+          </View>
           {error && (
             <Text style={styles.errorTxt}>
               Sorry! We could not find an account with these credentials
@@ -207,5 +248,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    width: '100%',
+    marginVertical: 10,
+  },
+  rememberMe: {
+    fontWeight: '700',
+    fontSize: 13,
+    color: COLORS.dark_grey,
+    marginRight: 10,
   },
 });

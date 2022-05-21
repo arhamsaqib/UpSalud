@@ -6,6 +6,7 @@ import {cos} from 'react-native-reanimated';
 import {SendButton} from './components/sendButton';
 import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {COLORS} from '../../colors';
 
 export const fChat = ({navigation, route}: any) => {
   const [messages, setMessages]: any = useState([]);
@@ -105,5 +106,6 @@ const styles = StyleSheet.create({
   ti: {
     // borderWidth: 1,
     padding: 10,
+    color: COLORS.blue,
   },
 });

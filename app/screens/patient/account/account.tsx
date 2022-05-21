@@ -9,6 +9,7 @@ import {
 import {COLORS} from '../../../colors';
 import {GlobalStyles} from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {MenuIcon} from '../../../components/menuIcon';
 
 interface CProps {
   onPress?(): void;
@@ -35,7 +36,15 @@ const Card = (props: CProps) => {
 export const Account = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 20}}>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
         <Text style={styles.title}>Account</Text>
       </View>
 

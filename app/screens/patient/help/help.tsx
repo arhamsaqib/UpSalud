@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView, Text} from 'react-native';
+import {MenuIcon} from '../../../components/menuIcon';
 import {GlobalStyles} from '../../../styles/globalStyles';
 
 const Card = () => {
@@ -34,7 +35,15 @@ const ContactUs = () => {
 export const Help = ({navigation}: any) => {
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%'}}>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
         <Text style={[styles.title, {fontSize: 18}]}>Help</Text>
       </View>
       <View style={{width: '90%'}}>

@@ -13,6 +13,7 @@ import {RootStateOrAny, useSelector} from 'react-redux';
 import {showPatientAllAppointments} from '../../../api/patientAppointments';
 import {COLORS} from '../../../colors';
 import {AppointmentCard} from '../../../components/AppointmentCard';
+import {MenuIcon} from '../../../components/menuIcon';
 
 export const MyAppointments = ({navigation}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
@@ -35,7 +36,14 @@ export const MyAppointments = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 20}}>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
         <Text style={styles.title}>My Appointments</Text>
       </View>
       {loader && <ActivityIndicator size="small" color={COLORS.dark_blue} />}

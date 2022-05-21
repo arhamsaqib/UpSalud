@@ -19,6 +19,7 @@ import {showPatientById} from '../../../api/patientAppointments';
 import {useEffect} from 'react';
 import {ConvertDateToObject} from '../../../components/ConvertDateToObject';
 import {updateAppointment} from '../../../api/appointments';
+import {MenuIcon} from '../../../components/menuIcon';
 
 interface RequestCardP {
   reason?: string;
@@ -166,8 +167,16 @@ export const DoctorHome = ({navigation}: any) => {
   }
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 40}}>
-        <MyText style={[styles.title, {fontSize: 20}]}>Home</MyText>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 40,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
+        <Text style={styles.title}>Home</Text>
       </View>
       {loader && <ActivityIndicator color={COLORS.dark_blue} size="small" />}
       {!loader && (

@@ -7,6 +7,7 @@ import {WebpayPlus} from 'transbank-sdk';
 import {TextInputStandard} from '../../../core/textInput';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ButtonStandard} from '../../../core/button';
+import {MenuIcon} from '../../../components/menuIcon';
 
 interface FieldProps {
   name?: string;
@@ -83,8 +84,16 @@ export const Payment = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 40}}>
-        <MyText style={[styles.title, {fontSize: 20}]}>Payment</MyText>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
+        <Text style={styles.title}>Payment</Text>
       </View>
       <ScrollView style={{width: '100%'}}>
         <View style={{width: '100%', alignItems: 'center'}}>

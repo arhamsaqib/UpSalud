@@ -7,8 +7,9 @@ import {ButtonStandard} from '../../core/button';
 import {MyText} from '../../core/text';
 import CheckBox from '@react-native-community/checkbox';
 import {Logo} from '../../components/logo';
-import { CheckApi } from '../../api/checkapi';
-import { Alert } from 'react-native';
+import {CheckApi} from '../../api/checkapi';
+import {Alert} from 'react-native';
+import {THIS_VERSION} from '../../constants/version';
 
 export const Welcome = ({navigation}: any) => {
   function onRegisterPress() {
@@ -47,6 +48,9 @@ export const Welcome = ({navigation}: any) => {
           </MyText>
         </View> */}
       </View>
+      <View style={styles.bottom}>
+        <MyText style={{fontWeight: 'bold'}}>V{THIS_VERSION} beta</MyText>
+      </View>
     </SafeAreaView>
   );
 };
@@ -69,5 +73,11 @@ const styles = StyleSheet.create({
   },
   tosText: {
     fontWeight: 'bold',
+  },
+  bottom: {
+    position: 'absolute',
+    bottom: 20,
+    alignItems: 'center',
+    width: '90%',
   },
 });

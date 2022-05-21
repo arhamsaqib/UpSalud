@@ -16,6 +16,7 @@ import {GlobalStyles} from '../../../styles/globalStyles';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {ConvertDateToObject} from '../../../components/ConvertDateToObject';
 import {MyText} from '../../../core/text';
+import {MenuIcon} from '../../../components/menuIcon';
 
 interface TOA {
   selected?: boolean;
@@ -65,7 +66,15 @@ export const AddAppointments = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%'}}>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 20,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
         <Text style={styles.head}>Add Appointments</Text>
       </View>
       <ScrollView style={{width: '100%'}}>

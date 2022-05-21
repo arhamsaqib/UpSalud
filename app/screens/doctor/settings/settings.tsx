@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../colors';
 import {Alert} from 'react-native';
 import Toast from 'react-native-toast-message';
+import {MenuIcon} from '../../../components/menuIcon';
 
 export const SettingsDoctor = ({navigation}: any) => {
   function locationError() {
@@ -18,8 +19,16 @@ export const SettingsDoctor = ({navigation}: any) => {
   }
   return (
     <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', marginBottom: 40}}>
-        <MyText style={[styles.title, {fontSize: 20}]}>Settings</MyText>
+      <View
+        style={{
+          width: '90%',
+          marginBottom: 40,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <MenuIcon navigation={navigation} />
+
+        <Text style={styles.title}>Settins</Text>
       </View>
       <View style={{width: '90%'}}>
         <TouchableOpacity

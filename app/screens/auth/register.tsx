@@ -49,7 +49,7 @@ export const Register = ({navigation}: any) => {
       return;
     }
     const userInfo = {
-      email: email,
+      email: email.trim(),
       fname: fname,
       lname: lname,
       idnumber: id,

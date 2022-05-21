@@ -21,6 +21,7 @@ import {useEffect} from 'react';
 import {COLORS} from '../../../colors';
 import auth from '@react-native-firebase/auth';
 import {showUser} from '../../../api/users';
+import {ConvertDateToObject} from '../../../helpers/convertDateObject';
 
 export const Profile = ({navigation}: any) => {
   const [loader, setLoader] = useState(false);
@@ -63,6 +64,7 @@ export const Profile = ({navigation}: any) => {
   useEffect(() => {
     FetchAPI();
   }, []);
+  const dobirth = ConvertDateToObject(data.dob);
   return (
     <SafeAreaView style={styles.main}>
       <View
@@ -106,7 +108,13 @@ export const Profile = ({navigation}: any) => {
             onChangeText={setIdnumber}
           />
           <MyText style={styles.head}>Date of Birth</MyText>
-          <TextInputStandard defaultValue={data.dob} onChangeText={setDob} />
+          <TextInputStandard
+            defaultValue={
+              dobirth.date + ' ' + dobirth.month + ' ' + dobirth.year
+            }
+            editable={false}
+            onChangeText={setDob}
+          />
         </View>
       </View>
       <View style={styles.bottom}>
