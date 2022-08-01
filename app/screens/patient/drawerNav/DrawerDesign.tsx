@@ -18,6 +18,7 @@ import {RootStateOrAny, useSelector} from 'react-redux';
 import {showPatientById} from '../../../api/patientAppointments';
 import {showDoctorById} from '../../../api/doctorAppointment';
 import {useEffect} from 'react';
+import {color} from 'react-native-reanimated';
 
 export const CustomDrawer = (props: any) => {
   const [user, setUser]: any = useState([]);
@@ -63,7 +64,7 @@ export const CustomDrawer = (props: any) => {
             justifyContent: 'center',
           }}>
           <TouchableOpacity onPress={props.navigation.closeDrawer}>
-            <Icon name="close" size={35} color={COLORS.text_blue} />
+            <Icon name="close" size={35} color={'white'} />
           </TouchableOpacity>
         </View>
         <View
@@ -90,10 +91,11 @@ export const CustomDrawer = (props: any) => {
                 fontSize: 15,
                 fontWeight: 'bold',
                 letterSpacing: -1,
+                color: 'white',
               }}>
               {user.name ?? 'User'}
             </MyText>
-            <MyText style={{fontSize: 15, letterSpacing: -1}}>
+            <MyText style={{fontSize: 15, letterSpacing: -1, color: 'white'}}>
               {user.role}
             </MyText>
           </View>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
     minHeight: '20%',
   },
   headerTextCont: {

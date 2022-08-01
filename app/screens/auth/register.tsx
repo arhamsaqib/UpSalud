@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
   },
   infoCont: {
     //borderWidth: 1,

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    backgroundColor: COLORS.dark_blue,
+    backgroundColor: COLORS.text_blue,
     //borderColor: COLORS.yellow,
     marginVertical: 5,
     flexDirection: 'row',

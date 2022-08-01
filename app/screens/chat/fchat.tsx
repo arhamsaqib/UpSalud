@@ -2,10 +2,7 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {GiftedChat, Send} from 'react-native-gifted-chat';
 import {RootStateOrAny, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-import {cos} from 'react-native-reanimated';
-import {SendButton} from './components/sendButton';
-import {StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import {COLORS} from '../../colors';
 
 export const fChat = ({navigation, route}: any) => {
@@ -64,6 +61,7 @@ export const fChat = ({navigation, route}: any) => {
 
     const msg = messages[0];
     const newMsg = {
+      //@ts-ignore
       ...msg,
       sentBy: state.id,
       sentTo: receiverId,
@@ -87,6 +85,7 @@ export const fChat = ({navigation, route}: any) => {
     <SafeAreaView style={styles.main}>
       <GiftedChat
         messages={messages}
+        //@ts-ignore
         onSend={messages => onSend(messages)}
         renderAvatar={() => null}
         user={{

@@ -7,6 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {allReducers} from './app/redux/reducers';
+import VideoCall from './call';
 
 const App = () => {
   const persistConfig = {

@@ -25,7 +25,9 @@ export const Welcome = ({navigation}: any) => {
         <Logo />
       </View>
       <MyText style={styles.welcome}>WELCOME</MyText>
-      <MyText style={{marginVertical: 10}}>Register to continue</MyText>
+      <MyText style={{marginVertical: 10, color: 'white'}}>
+        Register to continue
+      </MyText>
       <View style={{width: '90%', alignItems: 'center', marginVertical: 20}}>
         <ButtonStandard title="Register" onPress={onRegisterPress} />
         <Circle />
@@ -59,10 +61,10 @@ const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
   },
   welcome: {
-    color: COLORS.text_blue,
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },

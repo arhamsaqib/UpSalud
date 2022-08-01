@@ -3,6 +3,7 @@ export interface UserInterface {
   email: string;
   fuid: string; //Firebase User Id
   role: 'patient | doctor';
+  status?: string;
 }
 
 export interface BasicInformationInterface {

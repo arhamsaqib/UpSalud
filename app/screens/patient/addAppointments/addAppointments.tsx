@@ -130,10 +130,9 @@ export const AddAppointments = ({navigation}: any) => {
               onPress={() => setShow(true)}
               style={[
                 GlobalStyles.elevated_card,
-                {alignItems: 'center', backgroundColor: COLORS.light_blue},
+                {alignItems: 'center', backgroundColor: COLORS.new_blue},
               ]}>
-              <Text
-                style={[styles.head, {fontSize: 15, color: COLORS.text_blue}]}>
+              <Text style={[styles.head, {fontSize: 15, color: 'white'}]}>
                 Pick a date
               </Text>
             </TouchableOpacity>
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#222222',
   },
   toaSelected: {
-    backgroundColor: COLORS.blue,
+    backgroundColor: COLORS.new_blue,
     borderColor: COLORS.blue,
   },
 });

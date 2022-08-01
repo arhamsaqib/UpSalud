@@ -31,6 +31,7 @@ export const SetPassword = ({navigation, route}: any) => {
       email: route.params.userInfo.email,
       fuid: uid,
       role: route.params.user_type,
+      status: route.params.user_type === 'doctor' ? 'pending' : 'active',
     };
 
     const user = await createUser(data).finally(() => {
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
   },
   card: {},
   title: {

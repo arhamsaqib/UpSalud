@@ -16,8 +16,8 @@ const DayCard = (props: DayCard) => {
   const date: any = ConvertDateToObject(props.date);
   return (
     <View style={styles.dayCont}>
-      <Text style={styles.eventDesctxt}>{date.date}</Text>
-      <Text style={{letterSpacing: -1}}>{date.month}</Text>
+      <Text style={[styles.eventDesctxt, {color: 'white'}]}>{date.date}</Text>
+      <Text style={{letterSpacing: -1, color: 'white'}}>{date.month}</Text>
     </View>
   );
 };
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
   },
   time: {
     height: 20,

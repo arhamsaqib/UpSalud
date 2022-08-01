@@ -14,6 +14,7 @@ import SetUserAction from '../../redux/actions/CurrentUserActionRedux';
 import {CheckApi} from '../../api/checkapi';
 import {CheckBox} from '../../components/checkBox';
 import rememberMeAction from '../../redux/actions/rememberMeAction';
+import Toast from 'react-native-toast-message';
 
 export const Login = ({navigation}: any) => {
   const [email, setEmail] = useState('');
@@ -51,6 +52,8 @@ export const Login = ({navigation}: any) => {
   async function verifyLaravelUser(uid: any) {
     //console.log(uid);
     const user = await showUser(uid);
+    console.log(user, 'user');
+
     if (user.id !== undefined) {
       store.dispatch(
         SetUserAction({
@@ -77,11 +80,19 @@ export const Login = ({navigation}: any) => {
         );
       }
     }
-    if (user.role === 'patient') {
-      navigation.navigate('Patient');
-    }
-    if (user.role === 'doctor') {
-      navigation.navigate('Doctor');
+    if (user.status !== 'active') {
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: 'You are not allowed to login!',
+      });
+    } else {
+      if (user.role === 'patient') {
+        navigation.navigate('Patient');
+      }
+      if (user.role === 'doctor') {
+        navigation.navigate('Doctor');
+      }
     }
   }
 
@@ -99,6 +110,11 @@ export const Login = ({navigation}: any) => {
       .catch(error => {
         setLoader(false);
         setError(true);
+        Toast.show({
+          type: 'error',
+          text1: 'Login failed',
+          text2: error.code,
+        });
         // if (error === 'auth/email-already-in-use') {
         //   console.log('That email address is already in use!');
         // }
@@ -124,67 +140,69 @@ export const Login = ({navigation}: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.main}>
-      <View style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
-        <Icon
-          name="arrow-back-outline"
-          size={30}
-          onPress={() => navigation.goBack()}
-        />
-        <Text style={[styles.title, {fontSize: 18}]}>Login</Text>
-      </View>
-      <View style={{width: '90%'}}>
-        <View style={styles.infoCont}>
-          <MyText style={styles.title}>Email</MyText>
-          <TextInputStandard value={email} onChangeText={setEmail} />
-          <MyText style={styles.title}>Password</MyText>
-          <TextInputStandard
-            onChangeText={setPassword}
-            secureTextEntry={!show}
-            value={password}
+    <>
+      <SafeAreaView style={styles.main}>
+        <View
+          style={{width: '90%', flexDirection: 'row', alignItems: 'center'}}>
+          <Icon
+            name="arrow-back-outline"
+            size={30}
+            onPress={() => navigation.goBack()}
           />
-          <View style={styles.row}>
-            <MyText style={styles.rememberMe}>Remember Me</MyText>
-            <CheckBox onChangeVal={setRememberMe} value={rememberMe} />
-          </View>
-          {error && (
-            <Text style={styles.errorTxt}>
-              Sorry! We could not find an account with these credentials
-            </Text>
-          )}
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 10,
-              justifyContent: 'space-between',
-            }}>
-            <MyText style={styles.title}>Show Passwords</MyText>
-            <Switch onValueChange={setShow} value={show} />
-          </View>
-          <View
-            style={{
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              marginVertical: 10,
-            }}>
-            <Text
-              onPress={onForget}
-              style={[styles.title, {color: COLORS.dark_blue}]}>
-              Forgot Password?
-            </Text>
+          <Text style={[styles.title, {fontSize: 18}]}>Login</Text>
+        </View>
+        <View style={{width: '90%'}}>
+          <View style={styles.infoCont}>
+            <MyText style={styles.title}>Email</MyText>
+            <TextInputStandard value={email} onChangeText={setEmail} />
+            <MyText style={styles.title}>Password</MyText>
+            <TextInputStandard
+              onChangeText={setPassword}
+              secureTextEntry={!show}
+              value={password}
+            />
+            <View style={styles.row}>
+              <MyText style={styles.rememberMe}>Remember Me</MyText>
+              <CheckBox onChangeVal={setRememberMe} value={rememberMe} />
+            </View>
+            {error && (
+              <Text style={styles.errorTxt}>
+                Sorry! We could not find an account with these credentials
+              </Text>
+            )}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginVertical: 10,
+                justifyContent: 'space-between',
+              }}>
+              <MyText style={styles.title}>Show Passwords</MyText>
+              <Switch onValueChange={setShow} value={show} />
+            </View>
+            <View
+              style={{
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                marginVertical: 10,
+              }}>
+              <Text
+                onPress={onForget}
+                style={[styles.title, {color: COLORS.dark_blue}]}>
+                Forgot Password?
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={{width: '90%'}}>
-        <ButtonStandard
-          loading={loader}
-          disabled={loader || disabled()}
-          title="Login"
-          onPress={onContinue}
-        />
+        <View style={{width: '90%'}}>
+          <ButtonStandard
+            loading={loader}
+            disabled={loader || disabled()}
+            title="Login"
+            onPress={onContinue}
+          />
 
-        {/* <ButtonStandard
+          {/* <ButtonStandard
           loading={loader}
           disabled={loader}
           title="Doctor"
@@ -202,8 +220,10 @@ export const Login = ({navigation}: any) => {
             setPassword('hahabisti123');
           }}
         /> */}
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
+      <Toast position="bottom" />
+    </>
   );
 };
 
@@ -211,7 +231,7 @@ const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.new_blue,
   },
   infoCont: {
     //borderWidth: 1,
