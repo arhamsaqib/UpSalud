@@ -4,6 +4,7 @@ type CustomTextProps = {
   style?: StyleProp<TextStyle>;
   //numberOfLines?: number;
   onPress?(): void;
+  children?: any;
 };
 export const MyText: FunctionComponent<CustomTextProps> = ({
   children,

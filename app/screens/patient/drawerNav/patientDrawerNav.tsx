@@ -10,6 +10,7 @@ import {CustomDrawer} from './DrawerDesign';
 import {COLORS} from '../../../colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PaymentStack} from '../../doctor/payment/paymentStack';
+import {VideoCallStack} from '../videocall/videocallStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -79,6 +80,16 @@ export const PatientDrawerNav = () => {
               size={18}
               color={COLORS.dark_blue}
             />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Drawer.Screen
+        name="Video"
+        component={VideoCallStack}
+        options={{
+          drawerIcon: ({}) => (
+            <Icon name="videocam-outline" size={18} color={COLORS.dark_blue} />
           ),
           unmountOnBlur: true,
         }}
