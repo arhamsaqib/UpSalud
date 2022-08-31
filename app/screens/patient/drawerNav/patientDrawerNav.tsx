@@ -85,7 +85,7 @@ export const PatientDrawerNav = () => {
         }}
       />
       <Drawer.Screen
-        name="Video"
+        name="Video Call"
         component={VideoCallStack}
         options={{
           drawerIcon: ({}) => (

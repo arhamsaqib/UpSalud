@@ -8,6 +8,7 @@ import {AllAppointmentsDoctorStack} from '../allAppointments/allAppointmentsDoct
 import {HomeStackDoctor} from '../home/homeStackDoctor';
 import {SettingsStackDoctor} from '../settings/settingsStack';
 import {PaymentStack} from '../payment/paymentStack';
+import {VideoCallStack} from '../../patient/videocall/videocallStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +26,16 @@ export const DoctorDrawerNav = () => {
         options={{
           drawerIcon: ({}) => (
             <Icon name="home-outline" size={18} color={COLORS.dark_blue} />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Drawer.Screen
+        name="Video Call"
+        component={VideoCallStack}
+        options={{
+          drawerIcon: ({}) => (
+            <Icon name="videocam-outline" size={18} color={COLORS.dark_blue} />
           ),
           unmountOnBlur: true,
         }}

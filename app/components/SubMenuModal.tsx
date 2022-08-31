@@ -1,20 +1,36 @@
 import React, {FunctionComponent} from 'react';
-import {Modal, StyleSheet, View} from 'react-native';
+import {StyleProp, TouchableOpacity} from 'react-native';
+import {Modal, StyleSheet, View, ViewStyle} from 'react-native';
 
 interface ModalView {
   modalVisibility: boolean;
   onCancelPress?(): void;
+  children?: any;
+  mainContainerStyles?: StyleProp<ViewStyle>;
+  innerContainerStyles?: StyleProp<ViewStyle>;
+  enableOutsidePress?: boolean;
 }
 
 export const SubMenuModal: FunctionComponent<ModalView> = ({
   children,
   modalVisibility,
+  mainContainerStyles,
+  innerContainerStyles,
   onCancelPress,
+  enableOutsidePress,
 }) => {
   return (
     <Modal visible={modalVisibility} transparent={true}>
-      <View style={styles.modalView1}>
-        <View style={styles.modalView2}>{children}</View>
+      <View style={[styles.modalView1, mainContainerStyles]}>
+        {enableOutsidePress && (
+          <TouchableOpacity
+            onPress={onCancelPress}
+            style={{width: '100%', height: '70%'}}
+          />
+        )}
+        <View style={[styles.modalView2, innerContainerStyles]}>
+          {children}
+        </View>
       </View>
     </Modal>
   );

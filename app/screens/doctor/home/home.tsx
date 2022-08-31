@@ -20,6 +20,7 @@ import {useEffect} from 'react';
 import {ConvertDateToObject} from '../../../components/ConvertDateToObject';
 import {updateAppointment} from '../../../api/appointments';
 import {MenuIcon} from '../../../components/menuIcon';
+import {CallModal} from '../../../components/callModal';
 
 interface RequestCardP {
   reason?: string;
@@ -27,15 +28,19 @@ interface RequestCardP {
   location?: string;
   emergency?: string;
   patient_id: string;
+  doctorId?: string;
   onAcceptPress?(): void;
   onRejectPress?(): void;
   status?: string;
   onPress?(): void;
   onChatPress?(): void;
+  onCallPress?(room?: string): void;
 }
 
 const RequestCard = (props: RequestCardP) => {
   const [patient, setPatient]: any = useState([]);
+  const callRoom = 'pat' + props.patient_id + 'doc' + props.doctorId;
+
   async function FetchAPI() {
     const data = await showPatientById({patient_id: props.patient_id});
     if (data !== undefined) {
@@ -118,11 +123,24 @@ const RequestCard = (props: RequestCardP) => {
         />
       )}
       {props.status === 'active' && (
-        <ButtonStandard
-          title="Chat"
-          style={{backgroundColor: COLORS.green}}
-          onPress={props.onChatPress}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}>
+          <ButtonStandard
+            title="Chat"
+            style={{backgroundColor: COLORS.green, width: '70%'}}
+            onPress={props.onChatPress}
+          />
+          <ButtonStandard
+            title="Call"
+            style={{backgroundColor: COLORS.blue, width: '25%'}}
+            onPress={() => props.onCallPress && props.onCallPress(callRoom)}
+          />
+        </View>
       )}
       {props.status === 'cencelled' && (
         <ButtonStandard
@@ -139,6 +157,8 @@ export const DoctorHome = ({navigation}: any) => {
   const state = useSelector((state: RootStateOrAny) => state.CurrentUser);
   const [appointments, setAppointments] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [callModal, setCallModal] = useState(false);
+  const [roomCode, setRoomCode] = useState('');
   async function FetchAPI() {
     setLoader(true);
     const data = await showDoctorAllAppointments(state.id).finally(() =>
@@ -165,45 +185,68 @@ export const DoctorHome = ({navigation}: any) => {
     });
     // console.log(update, 'Update');
   }
-  return (
-    <SafeAreaView style={styles.main}>
-      <View
-        style={{
-          width: '90%',
-          marginBottom: 40,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <MenuIcon navigation={navigation} />
 
-        <Text style={styles.title}>Home</Text>
-      </View>
-      {loader && <ActivityIndicator color={COLORS.dark_blue} size="small" />}
-      {!loader && (
-        <View style={{width: '90%'}}>
-          <FlatList
-            data={appointments}
-            style={{marginBottom: 40}}
-            renderItem={({item, index}: any) => (
-              <View>
-                <RequestCard
-                  patient_id={item.uid}
-                  reason={item.reason}
-                  date={item.date}
-                  emergency={item.emergency}
-                  status={item.status}
-                  onAcceptPress={() => onAcceptPress(item.id)}
-                  onRejectPress={() => onRejectPress(item.id)}
-                  onChatPress={() =>
-                    navigation.navigate('fChat', {receiverId: item.uid})
-                  }
-                />
-              </View>
-            )}
-          />
+  function onMakeCall() {
+    setCallModal(false);
+    navigation.navigate('makeCallD', {roomId: roomCode});
+  }
+  function onReceiveCall() {
+    setCallModal(false);
+    navigation.navigate('joinCallD', {roomId: roomCode});
+  }
+
+  return (
+    <>
+      <SafeAreaView style={styles.main}>
+        <View
+          style={{
+            width: '90%',
+            marginBottom: 40,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <MenuIcon navigation={navigation} />
+
+          <Text style={styles.title}>Home</Text>
         </View>
-      )}
-    </SafeAreaView>
+        {loader && <ActivityIndicator color={COLORS.dark_blue} size="small" />}
+        {!loader && (
+          <View style={{width: '90%'}}>
+            <FlatList
+              data={appointments}
+              style={{marginBottom: 40}}
+              renderItem={({item, index}: any) => (
+                <View>
+                  <RequestCard
+                    patient_id={item.uid}
+                    doctorId={state.id}
+                    reason={item.reason}
+                    date={item.date}
+                    emergency={item.emergency}
+                    status={item.status}
+                    onAcceptPress={() => onAcceptPress(item.id)}
+                    onRejectPress={() => onRejectPress(item.id)}
+                    onChatPress={() =>
+                      navigation.navigate('fChat', {receiverId: item.uid})
+                    }
+                    onCallPress={(room: string) => {
+                      setRoomCode(room);
+                      setCallModal(true);
+                    }}
+                  />
+                </View>
+              )}
+            />
+          </View>
+        )}
+      </SafeAreaView>
+      <CallModal
+        visible={callModal}
+        onCancelPress={() => setCallModal(false)}
+        onMakeCall={onMakeCall}
+        onReceiveCall={onReceiveCall}
+      />
+    </>
   );
 };
 

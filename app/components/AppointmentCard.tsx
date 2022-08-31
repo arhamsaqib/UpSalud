@@ -1,8 +1,9 @@
 import React from 'react';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
 import {showDoctorById} from '../api/doctorAppointment';
 import {COLORS} from '../colors';
 import {GlobalStyles} from '../styles/globalStyles';
@@ -85,6 +86,8 @@ interface CEProps {
   emergency?: string;
   onPress?(): void;
   onChatPress?(): void;
+  patientId?: any;
+  onCallPress?(room?: string): void;
 }
 
 interface Status {
@@ -116,6 +119,7 @@ const Status = (props: Status) => {
 };
 
 export const AppointmentCard = (props: CEProps) => {
+  const callRoom = 'pat' + props.patientId + 'doc' + props.doctor_id;
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.cont}>
       <View style={{width: '30%'}}>
@@ -149,21 +153,46 @@ export const AppointmentCard = (props: CEProps) => {
           </View>
         )}
         {props.status === 'active' && (
-          <TouchableOpacity
-            onPress={props.onChatPress}
-            style={[
-              GlobalStyles.elevated_card,
-              {
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: COLORS.green,
-              },
-            ]}>
-            <Text
-              style={{letterSpacing: -1, fontWeight: 'bold', color: 'white'}}>
-              Chat
-            </Text>
-          </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <TouchableOpacity
+              onPress={props.onChatPress}
+              style={[
+                GlobalStyles.elevated_card,
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: COLORS.green,
+                  width: '70%',
+                },
+              ]}>
+              <Text
+                style={{letterSpacing: -1, fontWeight: 'bold', color: 'white'}}>
+                Chat
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => props.onCallPress && props.onCallPress(callRoom)}
+              style={[
+                GlobalStyles.elevated_card,
+                {
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: COLORS.dark_blue,
+                  width: '25%',
+                },
+              ]}>
+              <Text
+                style={{letterSpacing: -1, fontWeight: 'bold', color: 'white'}}>
+                Call
+              </Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     </TouchableOpacity>
