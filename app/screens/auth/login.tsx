@@ -80,8 +80,7 @@ export const Login = ({navigation}: any) => {
         );
       }
     }
-    // if (user.status !== 'active') {
-    if (user.role === 'hi') {
+    if (user.status !== 'active') {
       Toast.show({
         type: 'error',
         text1: 'Login Failed',
